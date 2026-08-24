@@ -271,6 +271,30 @@ python3 scripts/stats.py 7      # 直近7日
 発行画面（Settings → API tokens）の**「統計の読み取り」にチェックが要ります**。
 サイト設定ページにある Secret token とは別物で、そちらでは 401 になります。
 
+### 集計期間の指定に注意
+
+GoatCounter の `end` は**その日を含みません**。`stats.py` は内部で +1日して渡しています。
+ここを直接いじると、当日ぶんが落ちて `total` だけ 0 になり、気づきにくい形で壊れます。
+（`total_utc` のほうには数字が出るので、食い違っていたらこれを疑ってください）
+
+### 週次レポートの自動実行
+
+毎週月曜の朝、Claude が自動でレポートを作ります。設定はここです。
+
+```
+~/.claude/scheduled-tasks/portfolio-weekly-analytics/SKILL.md
+```
+
+曜日・時刻を変えたい、やめたいときは、アプリのサイドバーの「Scheduled」から操作できます。
+**Claude のアプリを開いているあいだに実行されます。** 実行時刻に閉じていた場合は、
+次にアプリを開いたときに走ります。
+
+過去のレポートは追記で溜まっていきます。
+
+```
+~/.config/kotani-portfolio/weekly-reports.md
+```
+
 ---
 
 ## デザインについて
