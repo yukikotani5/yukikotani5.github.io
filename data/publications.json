@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-08-24T21:57:24+00:00",
+ "updatedAt": "2026-08-25T21:56:32+00:00",
  "stats": {
   "total": 94,
   "articles": 74,
   "firstAuthor": 23,
-  "citations": 1472,
+  "citations": 1475,
   "since": 2016
  },
  "top": [
@@ -12,7 +12,7 @@
    "title": "A Randomized Trial of Intravenous Amino Acids for Kidney Protection",
    "journal": "N Engl J Med",
    "year": 2024,
-   "citations": 178,
+   "citations": 179,
    "doi": "10.1056/nejmoa2403769",
    "url": "https://doi.org/10.1056/nejmoa2403769",
    "position": "middle",
@@ -63,7 +63,7 @@
    "title": "Propofol and survival: an updated meta-analysis of randomized clinical trials",
    "journal": "Crit Care",
    "year": 2023,
-   "citations": 91,
+   "citations": 92,
    "doi": "10.1186/s13054-023-04431-8",
    "url": "https://doi.org/10.1186/s13054-023-04431-8",
    "position": "first",
