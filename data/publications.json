@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-08-25T21:56:32+00:00",
+ "updatedAt": "2026-08-28T02:25:40+00:00",
  "stats": {
   "total": 94,
   "articles": 74,
   "firstAuthor": 23,
-  "citations": 1475,
+  "citations": 1478,
   "since": 2016
  },
  "top": [
@@ -12,7 +12,7 @@
    "title": "A Randomized Trial of Intravenous Amino Acids for Kidney Protection",
    "journal": "N Engl J Med",
    "year": 2024,
-   "citations": 179,
+   "citations": 180,
    "doi": "10.1056/nejmoa2403769",
    "url": "https://doi.org/10.1056/nejmoa2403769",
    "position": "middle",
@@ -29,7 +29,7 @@
    "title": "An updated \"norepinephrine equivalent\" score in intensive care as a marker of shock severity",
    "journal": "Crit Care",
    "year": 2023,
-   "citations": 167,
+   "citations": 168,
    "doi": "10.1186/s13054-023-04322-y",
    "url": "https://doi.org/10.1186/s13054-023-04322-y",
    "position": "first",

@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-08-25T21:56:32+00:00",
+ "updatedAt": "2026-08-28T02:25:40+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#86 ICUでコストをどこまで考えるべき？【お便り回答】",
    "url": "https://www.youtube.com/watch?v=Tepmyf_15kY",
    "thumbnail": "https://i.ytimg.com/vi/Tepmyf_15kY/mqdefault.jpg",
-   "metric": "22 回再生"
+   "metric": "110 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "2,347 回再生"
+   "metric": "2,371 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "【ARDS60周年⑨】VV-ECMOは肺を治すわけじゃない",
-   "url": "https://voicy.jp/channel/848405/8140844",
-   "date": "2026-08-26",
+   "title": "【ARDS60周年 #11】VV-ECMOのエビデンスは？",
+   "url": "https://voicy.jp/channel/848405/8138498",
+   "date": "2026-08-28",
    "metric": null,
    "thumbnail": null
   },
