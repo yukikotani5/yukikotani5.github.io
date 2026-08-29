@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-08-28T22:00:37+00:00",
+ "updatedAt": "2026-08-29T21:04:39+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#86 ICUでコストをどこまで考えるべき？【お便り回答】",
    "url": "https://www.youtube.com/watch?v=Tepmyf_15kY",
    "thumbnail": "https://i.ytimg.com/vi/Tepmyf_15kY/mqdefault.jpg",
-   "metric": "127 回再生"
+   "metric": "154 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "2,384 回再生"
+   "metric": "2,407 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "【ARDS60周年 #12】何を見てPEEPを決めるか？",
-   "url": "https://voicy.jp/channel/848405/8146151",
-   "date": "2026-08-29",
+   "title": "ハラスメント最終報告を読んで",
+   "url": "https://voicy.jp/channel/848405/8157342",
+   "date": "2026-08-30",
    "metric": null,
    "thumbnail": null
   },
