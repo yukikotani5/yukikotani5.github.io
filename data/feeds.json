@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-08-29T21:04:39+00:00",
+ "updatedAt": "2026-08-30T21:04:50+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
-   "title": "#86 ICUでコストをどこまで考えるべき？【お便り回答】",
-   "url": "https://www.youtube.com/watch?v=Tepmyf_15kY",
-   "thumbnail": "https://i.ytimg.com/vi/Tepmyf_15kY/mqdefault.jpg",
-   "metric": "154 回再生"
+   "title": "#88 ICUで腸管蠕動促進薬、いつ使う？ 胃内残量・嘔吐・腹部膨満での実践【お便り回答】",
+   "url": "https://www.youtube.com/watch?v=z_T9hJqm-9s",
+   "thumbnail": "https://i.ytimg.com/vi/z_T9hJqm-9s/mqdefault.jpg",
+   "metric": null
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "2,407 回再生"
+   "metric": "2,423 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "ハラスメント最終報告を読んで",
-   "url": "https://voicy.jp/channel/848405/8157342",
-   "date": "2026-08-30",
+   "title": "【ARDS60周年 #13】高いPEEPが効きそうなのって、いつ？",
+   "url": "https://voicy.jp/channel/848405/8158791",
+   "date": "2026-08-31",
    "metric": null,
    "thumbnail": null
   },
