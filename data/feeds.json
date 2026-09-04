@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-09-03T21:08:44+00:00",
+ "updatedAt": "2026-09-04T21:08:08+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#87 ICUでの肝障害で薬剤性をいつ疑う？時間軸で考える鑑別【お便り回答】",
    "url": "https://www.youtube.com/watch?v=LkKacec8c3s",
    "thumbnail": "https://i.ytimg.com/vi/LkKacec8c3s/mqdefault.jpg",
-   "metric": "274 回再生"
+   "metric": "303 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "2,482 回再生"
+   "metric": "2,500 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "【ARDS60周年 #17】ARDSにステロイドを使うのか？",
-   "url": "https://voicy.jp/channel/848405/8170817",
-   "date": "2026-09-04",
+   "title": "【ARDS60周年 #18】免疫不全患者での呼吸不全",
+   "url": "https://voicy.jp/channel/848405/8167057",
+   "date": "2026-09-05",
    "metric": null,
    "thumbnail": null
   },
@@ -48,7 +48,7 @@
    "title": "古くて新しいメイロン®︎",
    "url": "https://voicy.jp/channel/848405/7117573",
    "date": "2025-09-26",
-   "metric": "437 回再生",
+   "metric": "438 回再生",
    "thumbnail": null
   }
  }
