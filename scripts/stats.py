@@ -23,6 +23,7 @@ APIトークンはリポジトリに置きません。次のファイルから�
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -50,7 +51,16 @@ def load_conf():
     return site, token
 
 
-def api(site, token, path, params=None):
+def api(site, token, path, params=None, tries=4):
+    """GoatCounter の API を叩く。一時的な失敗は数回まで待って試し直す。
+
+    週1回しか走らない集計なので、たまたま通信が落ちた1回で
+    その週のレポートが丸ごと消えるのが一番困る。
+    実際 2026-09-07 の自動実行は、一過性の 404 で何も出せずに終わった。
+    （同じURLを直後に叩くと 200 が返った）
+
+    認証エラー（401/403）だけは待っても直らないので、すぐ諦める。
+    """
     url = f"https://{site}.goatcounter.com/api/v0/{path}"
     if params:
         url += "?" + urllib.parse.urlencode(params)
@@ -58,20 +68,33 @@ def api(site, token, path, params=None):
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
     })
-    try:
-        with urllib.request.urlopen(req, timeout=30) as r:
-            return json.loads(r.read())
-    except urllib.error.HTTPError as e:
-        if e.code == 401:
-            sys.exit(
-                "認証に失敗しました（401）。\n"
-                "  GoatCounter の Settings → API tokens でトークンを作り直し、\n"
-                f"  {CONF} の GOATCOUNTER_TOKEN を差し替えてください。\n"
-                "  ※「統計の読み取り」にチェックが要ります。サイト設定ページの\n"
-                "    Secret token は別物で、これでは通りません。")
-        if e.code == 403:
-            sys.exit("権限がありません（403）。トークンに統計の読み取り権限を付けてください。")
-        sys.exit(f"APIエラー {e.code}: {e.read()[:200].decode('utf-8', 'replace')}")
+
+    for attempt in range(1, tries + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return json.loads(r.read())
+        except urllib.error.HTTPError as e:
+            if e.code == 401:
+                sys.exit(
+                    "認証に失敗しました（401）。\n"
+                    "  GoatCounter の Settings → API tokens でトークンを作り直し、\n"
+                    f"  {CONF} の GOATCOUNTER_TOKEN を差し替えてください。\n"
+                    "  ※「統計の読み取り」にチェックが要ります。サイト設定ページの\n"
+                    "    Secret token は別物で、これでは通りません。")
+            if e.code == 403:
+                sys.exit("権限がありません（403）。トークンに統計の読み取り権限を付けてください。")
+            body = e.read()[:200].decode("utf-8", "replace")
+            last = f"APIエラー {e.code}: {body}"
+        except urllib.error.URLError as e:
+            last = f"通信に失敗しました: {e.reason}"
+
+        if attempt < tries:
+            wait = 2 ** attempt          # 2秒, 4秒, 8秒
+            print(f"  …取得に失敗しました（{attempt}/{tries}）。{wait}秒待って試し直します。",
+                  file=sys.stderr)
+            time.sleep(wait)
+
+    sys.exit(f"{last}\n  {tries}回試しましたが取得できませんでした。\n  呼び出し先: {url}")
 
 
 def fetch(site, token, path, start, end):
@@ -88,7 +111,15 @@ def fetch(site, token, path, start, end):
 
 
 def views(total_json):
-    return total_json.get("total", 0) or total_json.get("total_utc", 0)
+    """total が 0 のときに total_utc へ落ちないようにする。
+
+    `total or total_utc` と書くと、閲覧が本当に 0 回だった期間で total が
+    偽と見なされ、無関係な total_utc の値が代わりに返る。
+    実際それで「前の7日間は31回」と出たことがある（正しくは0回）。
+    total が無いときだけ total_utc を使う。
+    """
+    total = total_json.get("total")
+    return total if total is not None else total_json.get("total_utc", 0)
 
 
 def bar(n, mx, width=26):
@@ -151,8 +182,17 @@ def main():
 
     # 流入元 ── このサイトでは、どこから来たかが一番知りたい
     def refs(a, b):
+        """同じ名前が複数行で返ることがあるので合算する。
+
+        実際 www.facebook.com が count=1 の行として2つ返ってきた。
+        そのまま出すと同じ行が2回並び、割合も合わなくなる。
+        """
         st = fetch(site, token, "stats/toprefs", a, b).get("stats", [])
-        return [(r.get("name") or "直接アクセス・不明", r["count"]) for r in st]
+        merged = {}
+        for r in st:
+            name = r.get("name") or "直接アクセス・不明"
+            merged[name] = merged.get(name, 0) + r["count"]
+        return sorted(merged.items(), key=lambda kv: -kv[1])
 
     section("流入元", refs(start, today)[:12], pv, dict(refs(prev_start, prev_end)))
 
