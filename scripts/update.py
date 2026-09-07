@@ -502,6 +502,74 @@ def resolve_media_images():
 
 
 # ═══════════════════════════════════════════════════ 書き出し
+SITE_URL = "https://yukikotani5.github.io/"
+
+# 「2026-09-07」または「2026-09」の形だけを日付とみなす
+DATE_RE = re.compile(r"^(\d{4})-(\d{2})(?:-(\d{2}))?$")
+
+# updatedAt は取得を走らせた時刻なので、中身が変わっていなくても毎日動く。
+# これを lastmod に使うと毎日コミットが生まれるため、日付として数えない。
+NOT_A_CONTENT_DATE = {"updatedAt"}
+
+
+def latest_content_date():
+    """data/ にある一番新しい日付を返す（未来の予定は除く）。
+
+    sitemap の lastmod に「今日」を入れるのは避けたい。
+    中身が変わっていない日まで更新扱いになり、毎日 diff が出てコミットが増えるし、
+    毎日更新されている sitemap は検索エンジンからも信用されなくなる。
+    実際に載っている一番新しいものの日付を使う。
+
+    講演やイベントの予定は未来の日付で入るので、そこは数えない
+    （まだ起きていないものを「最終更新日」にはできない）。
+    """
+    today = datetime.now(timezone.utc).date().isoformat()
+    best = None
+
+    def walk(node, key=None):
+        nonlocal best
+        if isinstance(node, dict):
+            for k, v in node.items():
+                walk(v, k)
+        elif isinstance(node, list):
+            for v in node:
+                walk(v, key)
+        elif isinstance(node, str) and key not in NOT_A_CONTENT_DATE:
+            m = DATE_RE.match(node)
+            if m:
+                d = "%s-%s-%s" % (m.group(1), m.group(2), m.group(3) or "01")
+                if d <= today and (best is None or d > best):
+                    best = d
+
+    for name in sorted(os.listdir(DATA)):
+        if not name.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(DATA, name), encoding="utf-8") as f:
+                walk(json.load(f))
+        except Exception:                                           # noqa: BLE001
+            continue                    # 壊れたJSONで sitemap 生成を巻き込まない
+
+    return best or today
+
+
+def build_sitemap():
+    """1ページなので URL は1本。Search Console に出す用。"""
+    lastmod = latest_content_date()
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        "  <url>\n"
+        f"    <loc>{SITE_URL}</loc>\n"
+        f"    <lastmod>{lastmod}</lastmod>\n"
+        "  </url>\n"
+        "</urlset>\n"
+    )
+    with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write(xml)
+    print(f"  sitemap.xml を書きました（最終更新 {lastmod}）")
+
+
 def write(name, payload):
     path = os.path.join(DATA, name)
     tmp = path + ".tmp"
@@ -545,6 +613,11 @@ def main():
         resolve_media_images()
     except Exception as e:                                        # noqa: BLE001
         failures.append(f"media images: {e}")
+
+    try:
+        build_sitemap()
+    except Exception as e:                                          # noqa: BLE001
+        failures.append(f"sitemap: {e}")
 
     if failures:
         print("\n⚠ 一部の取得に失敗しました（既存データは保持）:", file=sys.stderr)

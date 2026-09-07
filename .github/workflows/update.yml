@@ -44,14 +44,14 @@ jobs:
               touch /tmp/fetch_failed
             fi
 
-            if [ -z "$(git status --porcelain data/)" ]; then
+            if [ -z "$(git status --porcelain data/ sitemap.xml)" ]; then
               echo "変更はありませんでした"
               exit 0
             fi
 
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/
+            git add data/ sitemap.xml
             git commit -qm "データ自動更新: $(date -u '+%Y-%m-%d')"
 
             if git push -q origin main; then

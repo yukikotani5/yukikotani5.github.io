@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# サイトの作り方をまとめた内部向けの説明書きなので、検索結果には出しません
+Disallow: /README.md
+
+Sitemap: https://yukikotani5.github.io/sitemap.xml
