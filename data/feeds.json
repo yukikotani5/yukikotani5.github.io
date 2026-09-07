@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-09-07T02:32:33+00:00",
+ "updatedAt": "2026-09-07T21:08:35+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#87 ICUでの肝障害で薬剤性をいつ疑う？時間軸で考える鑑別【お便り回答】",
    "url": "https://www.youtube.com/watch?v=LkKacec8c3s",
    "thumbnail": "https://i.ytimg.com/vi/LkKacec8c3s/mqdefault.jpg",
-   "metric": "369 回再生"
+   "metric": "395 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "2,538 回再生"
+   "metric": "2,561 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "【ARDS60周年 #19】最新のARDSの定義で何が変わったのか？",
-   "url": "https://voicy.jp/channel/848405/8180294",
-   "date": "2026-09-07",
+   "title": "【ARDS60周年 #20】ARDSと右心系・静脈うっ血の関係",
+   "url": "https://voicy.jp/channel/848405/8183292",
+   "date": "2026-09-08",
    "metric": null,
    "thumbnail": null
   },
