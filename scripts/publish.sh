@@ -23,6 +23,13 @@ except Exception as e: print(e); sys.exit(1)
   }
 done
 
+# profile.json を直したとき、構造化データが古いまま残らないようにする
+# （検索エンジンに渡す内容とページの表示がズレると逆効果になるため）
+python3 scripts/build_jsonld.py || {
+  echo "❌ 構造化データを作れませんでした。反映を中止しました。"
+  exit 1
+}
+
 git add -A
 if git diff --cached --quiet; then
   echo "変更はありませんでした。"

@@ -305,6 +305,24 @@ GoatCounter の `end` は**その日を含みません**。`stats.py` は内部�
   sitemap 自体も検索エンジンに信用されなくなるためです
 - `robots.txt` は手で書いた固定ファイルです。`README.md` だけ検索結果から外しています
 
+### 構造化データ（JSON-LD）
+
+`index.html` の `<head>` にある `application/ld+json` のブロックは、
+**`scripts/build_jsonld.py` が `data/profile.json` から自動生成します。手で編集しないでください。**
+`publish.sh` が毎回作り直すので、profile.json を直せば自動で追従します。
+
+検索エンジンに「小谷祐樹はこの人物です」と機械可読な形で伝えるものです。
+`Kotani Y` は同姓同名が多く（PubMed では別人の論文が21件混ざります）、
+検索エンジンでも同じ混同が起きるため、ORCID・所属・各アカウントを明示しています。
+
+**本人のプロフィールとポッドキャスト番組は別の項目に分けてあります。**
+Spotify や Amazon Music のURLは「番組」であって「本人」ではないので、
+Person の `sameAs` に入れると「小谷祐樹という人物＝この番組」と伝わってしまい、
+人物を区別させたいという目的と逆に働きます。
+
+profile.json に新しいリンクを足すと、スクリプトは**どちらに分類するか分からないため止まります**。
+`build_jsonld.py` の `PERSONAL_LINKS`（本人）か `PODCASTS`（番組）に足してください。
+
 Google Search Console の所有権確認は `index.html` の `<head>` にある
 `google-site-verification` の meta タグで行っています。**このタグは消さないでください。**
 消すと所有権の確認が外れ、検索の状況が見られなくなります。
