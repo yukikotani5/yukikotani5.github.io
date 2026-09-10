@@ -109,6 +109,13 @@
    "desc": "「ICUトーク」のAmazon Music版です。"
   },
   {
+   "id": "pody",
+   "name": "pody",
+   "handle": "ICUトーク",
+   "url": "https://pody.jp/player/ORmYoD2zLPReMxoK6t70",
+   "desc": "「ICUトーク」を記事としても読めます。要約と聞きどころつき。"
+  },
+  {
    "id": "voicy",
    "name": "Voicy",
    "handle": "小谷祐樹とICU",

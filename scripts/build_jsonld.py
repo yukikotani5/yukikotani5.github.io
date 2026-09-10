@@ -40,7 +40,7 @@ PERSONAL_LINKS = ["x", "note", "researchmap", "orcid", "facebook", "instagram"]
 # 混ぜると検索エンジンに「小谷祐樹という人物 ＝ このSpotifyの番組」と
 # 伝えることになり、人物を区別させたいという目的と逆に働く。
 PODCASTS = [
-    {"name": "ICUトーク", "main": "youtube", "also": ["spotify", "amazonmusic"],
+    {"name": "ICUトーク", "main": "youtube", "also": ["spotify", "amazonmusic", "pody"],
      "description": "集中治療について話すポッドキャスト。毎週配信しています。"},
     {"name": "小谷祐樹とICU", "main": "voicy", "also": [],
      "description": "Voicyでのひとりポッドキャスト。毎日配信しています。"},

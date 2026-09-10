@@ -227,6 +227,9 @@ function renderChannels(profile, feeds) {
     {
       id: "youtube", name: "ICUトーク", note: "毎週配信 · Podcast",
       url: link("youtube").url,
+      // pody では同じ回を記事としても読める。
+      // 聴く時間がない人や、あとから検索して探したい人のための入口。
+      extra: link("pody").url && { url: link("pody").url, label: "記事で読む →" },
       items: [feeds?.youtube?.latest, feeds?.youtube?.popular],
     },
     {
@@ -262,7 +265,10 @@ function renderChannels(profile, feeds) {
       <header class="chan-head">
         <h3 class="chan-name">${dot(c.id)}${esc(c.name)}</h3>
         <p class="chan-note">${esc(c.note)}</p>
-        ${c.url ? `<a class="chan-link" href="${esc(c.url)}" ${EXT}>すべて見る →</a>` : ""}
+        <div class="chan-links">
+          ${c.url ? `<a class="chan-link" href="${esc(c.url)}" ${EXT}>すべて見る →</a>` : ""}
+          ${c.extra ? `<a class="chan-link" href="${esc(c.extra.url)}" ${EXT}>${esc(c.extra.label)}</a>` : ""}
+        </div>
       </header>
       ${body || `<p class="empty">うまく読み込めませんでした。</p>`}
     </section>`;
