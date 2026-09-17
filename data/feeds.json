@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-09-16T23:31:23+00:00",
+ "updatedAt": "2026-09-17T23:21:23+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#89 その「なんか変」を言葉にする｜ICUのクリニカルパール【お便り回答】",
    "url": "https://www.youtube.com/watch?v=799Rv7vw-_E",
    "thumbnail": "https://i.ytimg.com/vi/799Rv7vw-_E/mqdefault.jpg",
-   "metric": "500 回再生"
+   "metric": "638 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "2,733 回再生"
+   "metric": "2,756 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "ICUで見る破傷風",
-   "url": "https://voicy.jp/channel/848405/8190212",
-   "date": "2026-09-15",
+   "title": "ショック管理の歴史から得た教訓とCRTの現在地",
+   "url": "https://voicy.jp/channel/848405/8205716",
+   "date": "2026-09-18",
    "metric": null,
    "thumbnail": null
   },
