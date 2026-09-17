@@ -44,6 +44,7 @@ CONTACT = "kotani.yuki@kameda.jp"
 
 # 同姓同名対策: "Kotani Y" は大阪の整形外科医・東大の化学者などにも該当する。
 # 所属で必ず絞り込むこと。ここを緩めると別人の論文が載ります。
+NCBI_TOOL = "kotani-portfolio"   # NCBI に「どのツールからの問い合わせか」を伝える
 PUBMED_QUERY = 'Kotani Y[Author] AND (Kameda[Affiliation] OR "San Raffaele"[Affiliation])'
 
 YOUTUBE_CHANNEL_ID = "UCmP6AkeW0xv4ol8EPOu5gfg"          # ICUトーク
@@ -66,7 +67,15 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 TIMEOUT = 45
 
 
-def fetch(url, data=None, retries=4, headers=None):
+def fetch(url, data=None, retries=4, headers=None, validate=None):
+    """取得する。失敗したら待って試し直す。
+
+    validate は「本文を見て、おかしければ理由の文字列を返す」関数。
+    通信は成功（HTTP 200）しているのに中身だけがエラー、という応答を
+    捕まえるために使う。NCBI は混雑すると実際にこれを返してくるので、
+    通信エラーと同じ扱いで試し直さないと、その日の更新が丸ごと落ちる。
+    （2026-09-18 の自動更新がこれで失敗した）
+    """
     last = None
     for i in range(retries):
         try:
@@ -75,13 +84,48 @@ def fetch(url, data=None, retries=4, headers=None):
             req = urllib.request.Request(
                 url, data=data.encode() if isinstance(data, str) else data, headers=h)
             with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-                return r.read()
+                body = r.read()
+            bad = validate(body) if validate else None
+            if bad:
+                raise RuntimeError(f"応答の中身が想定と違います: {bad}")
+            return body
         except Exception as e:                                    # noqa: BLE001
             last = e
             wait = 2 ** i
             print(f"    retry {i + 1}/{retries} in {wait}s ({e})", file=sys.stderr)
             time.sleep(wait)
     raise last
+
+
+def make_check(*path, allow_empty=True, label=""):
+    def check(body):
+        try:
+            node = json.loads(body)
+        except Exception as e:                                    # noqa: BLE001
+            return f"JSONとして読めません（{e}）"
+        for key in path:
+            if not isinstance(node, dict) or key not in node:
+                got = list(node)[:6] if isinstance(node, dict) else type(node).__name__
+                return f"{label or '/'.join(path)} がありません（実際のキー: {got}）"
+            node = node[key]
+        if not allow_empty and isinstance(node, (list, dict)) and not node:
+            # 0件が正しいことはない対象にだけ使う（この人の業績は0にならない）
+            return f"{label or '/'.join(path)} が空でした"
+        return None
+    return check
+
+
+def xml_ok(tag):
+    """XMLとして読めて、目的の要素が入っているかを確かめる。"""
+    def check(body):
+        try:
+            root = ET.fromstring(body)
+        except Exception as e:                                    # noqa: BLE001
+            return f"XMLとして読めません（{e}）"
+        if root.find(f".//{tag}") is None:
+            return f"{tag} が1件もありません"
+        return None
+    return check
 
 
 def norm_doi(d):
@@ -100,14 +144,18 @@ def pubmed():
     print("  PubMed …")
     base = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
     q = urllib.parse.quote(PUBMED_QUERY)
-    ids = json.loads(fetch(f"{base}esearch.fcgi?db=pubmed&term={q}"
-                           "&retmax=500&retmode=json"))["esearchresult"]["idlist"]
+    ids = json.loads(fetch(
+        f"{base}esearch.fcgi?db=pubmed&term={q}&retmax=500&retmode=json&tool={NCBI_TOOL}",
+        validate=make_check("esearchresult", "idlist",
+                            allow_empty=False, label="PubMedの検索結果"),
+    ))["esearchresult"]["idlist"]
     print(f"    {len(ids)} PMIDs")
     out = []
     for i in range(0, len(ids), 200):
         body = urllib.parse.urlencode(
             {"db": "pubmed", "id": ",".join(ids[i:i + 200]), "retmode": "xml"})
-        root = ET.fromstring(fetch(f"{base}efetch.fcgi", data=body))
+        root = ET.fromstring(fetch(f"{base}efetch.fcgi", data=body,
+                                   validate=xml_ok("PubmedArticle")))
         out += [p for p in (parse_pubmed(a) for a in root.findall(".//PubmedArticle")) if p]
         time.sleep(0.4)                       # NCBI のレート制限（3 req/s）を尊重
     return out
@@ -151,8 +199,13 @@ def parse_pubmed(art):
 
 def orcid():
     print("  ORCID …")
-    groups = json.loads(fetch(f"https://pub.orcid.org/v3.0/{ORCID_ID}/works",
-                              headers={"Accept": "application/json"})).get("group", [])
+    # 0件は「業績が無い」ではなく「取得に失敗した」ので、空なら試し直す。
+    # ここを素通りさせると publications.json が静かに痩せたまま上書きされる。
+    groups = json.loads(fetch(
+        f"https://pub.orcid.org/v3.0/{ORCID_ID}/works",
+        headers={"Accept": "application/json"},
+        validate=make_check("group", allow_empty=False, label="ORCIDの業績一覧"),
+    ))["group"]
     print(f"    {len(groups)} works")
     out = []
     for g in groups:
@@ -179,7 +232,8 @@ def openalex():
            f"?filter=author.orcid:{ORCID_ID}&per-page=200"
            "&select=doi,title,publication_year,cited_by_count,primary_location,authorships"
            f"&mailto={urllib.parse.quote(CONTACT)}")
-    d = json.loads(fetch(url))
+    d = json.loads(fetch(url, validate=make_check(
+        "results", allow_empty=False, label="OpenAlexの結果")))
     print(f"    {d['meta']['count']} works")
     out = {}
     for w in d["results"]:
@@ -570,6 +624,32 @@ def build_sitemap():
     print(f"  sitemap.xml を書きました（最終更新 {lastmod}）")
 
 
+def refuse_if_shrunk(name, stats, keys=("total", "articles", "citations"), keep=0.8):
+    """前回より極端に減っていたら、書き込まずに失敗として扱う。
+
+    取得先が「通信は成功しているが中身が不完全」な応答を返すと、
+    件数が静かに減ったまま publications.json を上書きしてしまい、
+    サイトの業績一覧が痩せる。しかも誰も気づかない。
+    前回の値と比べて明らかにおかしければ、前回のデータを残したまま止める。
+
+    論文は基本的に増える一方なので、2割以上減ったら異常と判断する。
+    """
+    path = os.path.join(DATA, name)
+    if not os.path.exists(path):
+        return                                  # 初回は比較対象が無い
+    try:
+        with open(path, encoding="utf-8") as f:
+            old = json.load(f).get("stats", {})
+    except Exception:                                           # noqa: BLE001
+        return                                  # 前回分が読めないなら比較しない
+    for k in keys:
+        o, n = old.get(k), stats.get(k)
+        if isinstance(o, int) and isinstance(n, int) and o > 0 and n < o * keep:
+            raise RuntimeError(
+                f"{k} が前回の {o} から {n} に減りました。"
+                "取得先が不完全な値を返した可能性が高いため、上書きを中止します。")
+
+
 def write(name, payload):
     path = os.path.join(DATA, name)
     tmp = path + ".tmp"
@@ -587,6 +667,7 @@ def main():
 
     try:
         pubs = build_publications()
+        refuse_if_shrunk("publications.json", pubs["stats"])
         write("publications.json", {"updatedAt": now, **pubs})
         s = pubs["stats"]
         print(f"  論文 {s['total']} 件 / 被引用 {s['citations']:,} 回 → 上位{TOP_PUBLICATIONS}件を掲載")
