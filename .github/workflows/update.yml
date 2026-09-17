@@ -24,9 +24,9 @@ jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -65,12 +65,15 @@ jobs:
           echo "::error::3回試しましたが push できませんでした"
           exit 1
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v6
+      # v4 以降、ドットファイル（.github や .gitignore）は成果物に含まれない。
+      # このサイトに必要なドットファイルは無いので、そのままで問題ない。
+      # 将来 .nojekyll などが要るようになったら include-hidden-files: true を足す。
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: .
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
       # 取得に失敗していたら、ジョブを失敗扱いにして気づけるようにする
       # （サイトは前回データのまま公開されているので、表示は壊れません）
