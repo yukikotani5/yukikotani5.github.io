@@ -67,7 +67,7 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 TIMEOUT = 45
 
 
-def fetch(url, data=None, retries=4, headers=None, validate=None):
+def fetch(url, data=None, retries=5, headers=None, validate=None):
     """取得する。失敗したら待って試し直す。
 
     validate は「本文を見て、おかしければ理由の文字列を返す」関数。
@@ -624,6 +624,29 @@ def build_sitemap():
     print(f"  sitemap.xml を書きました（最終更新 {lastmod}）")
 
 
+HEALTH_FILE = "health.json"
+
+# 補助的な取得先が「何回連続で失敗したら本気で知らせるか」。
+# 1回の失敗は他社側の一時障害であることがほとんどで、翌朝には直っている。
+# 毎回それで失敗メールを送ると、本当に壊れた日に気づけなくなる。
+ESCALATE_AFTER = 3
+
+# ここが落ちたらサイトの中身そのものが古くなるので、1回でも知らせる。
+# 逆にそれ以外は、前回の値が残るのでサイトの表示は壊れない。
+CRITICAL = {"publications", "sitemap"}
+
+
+def load_health():
+    p = os.path.join(DATA, HEALTH_FILE)
+    if os.path.exists(p):
+        try:
+            with open(p, encoding="utf-8") as f:
+                return json.load(f).get("sources", {})
+        except Exception:                                       # noqa: BLE001
+            pass
+    return {}
+
+
 def refuse_if_shrunk(name, stats, keys=("total", "articles", "citations"), keep=0.8):
     """前回より極端に減っていたら、書き込まずに失敗として扱う。
 
@@ -664,22 +687,48 @@ def main():
     os.makedirs(DATA, exist_ok=True)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     failures = []
+    health = load_health()
 
-    try:
+    def record(key, error=None):
+        """取得先ごとの成否を覚えておく。
+
+        1回の失敗と、何日も続く失敗を区別するために使う。
+        この記録は data/health.json に残り、次回の実行から見える。
+        """
+        h = health.setdefault(key, {})
+        if error is None:
+            h["lastOk"] = now
+            h["failStreak"] = 0
+            h.pop("lastError", None)
+        else:
+            h["failStreak"] = h.get("failStreak", 0) + 1
+            h["lastError"] = str(error)[:200]
+            h["lastErrorAt"] = now
+            failures.append((key, str(error)))
+
+    def attempt(key, fn):
+        try:
+            v = fn()
+            record(key)
+            return v
+        except Exception as e:                                  # noqa: BLE001
+            record(key, e)
+            return None
+
+    def publications():
         pubs = build_publications()
         refuse_if_shrunk("publications.json", pubs["stats"])
         write("publications.json", {"updatedAt": now, **pubs})
         s = pubs["stats"]
         print(f"  論文 {s['total']} 件 / 被引用 {s['citations']:,} 回 → 上位{TOP_PUBLICATIONS}件を掲載")
-    except Exception as e:                                        # noqa: BLE001
-        failures.append(f"publications: {e}")
+
+    attempt("publications", publications)
 
     feeds = {"updatedAt": now}
     for key, fn in (("youtube", youtube), ("note", note), ("voicy", voicy)):
-        try:
-            feeds[key] = fn()
-        except Exception as e:                                    # noqa: BLE001
-            failures.append(f"{key}: {e}")
+        v = attempt(key, fn)
+        if v is not None:
+            feeds[key] = v
     if len(feeds) > 1:
         # 取れた分だけ更新し、落ちた系統は前回値を残す
         old = {}
@@ -690,22 +739,38 @@ def main():
         old.update(feeds)
         write("feeds.json", old)
 
-    try:
-        resolve_media_images()
-    except Exception as e:                                        # noqa: BLE001
-        failures.append(f"media images: {e}")
+    attempt("media images", resolve_media_images)
+    attempt("sitemap", build_sitemap)
 
-    try:
-        build_sitemap()
-    except Exception as e:                                          # noqa: BLE001
-        failures.append(f"sitemap: {e}")
+    write(HEALTH_FILE, {"updatedAt": now, "sources": health})
 
-    if failures:
-        print("\n⚠ 一部の取得に失敗しました（既存データは保持）:", file=sys.stderr)
-        for f in failures:
-            print("   -", f, file=sys.stderr)
-        sys.exit(1)
-    print("\n✅ 更新完了")
+    if not failures:
+        print("\n✅ 更新完了")
+        return
+
+    # 「1回こけただけ」と「壊れている」を分ける。
+    # 前者で毎回失敗メールを送ると、本当に壊れた日に気づけなくなる。
+    hard, soft = [], []
+    for key, err in failures:
+        streak = health.get(key, {}).get("failStreak", 0)
+        (hard if key in CRITICAL or streak >= ESCALATE_AFTER else soft).append(
+            (key, err, streak))
+
+    for key, err, streak in soft:
+        print(f"::warning::{key} の取得に失敗しました（{streak}回目）。"
+              f"前回の値を表示しています。{ESCALATE_AFTER}回続いたら失敗として通知します。 {err}")
+    for key, err, streak in hard:
+        why = "サイトの中身に関わる取得先です" if key in CRITICAL \
+            else f"{streak}回連続で失敗しています。一時的な不調ではなさそうです"
+        print(f"::error::{key} の取得に失敗しました。{why}。 {err}")
+
+    print("\n⚠ 取得に失敗した系統があります（既存データは保持）:", file=sys.stderr)
+    for key, err, streak in soft:
+        print(f"   - {key}: {err}  （{streak}回目 / 様子見）", file=sys.stderr)
+    for key, err, streak in hard:
+        print(f"   - {key}: {err}  （{streak}回目 / 要対応）", file=sys.stderr)
+
+    sys.exit(1 if hard else 0)
 
 
 if __name__ == "__main__":

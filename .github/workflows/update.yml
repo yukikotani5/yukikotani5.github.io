@@ -39,8 +39,10 @@ jobs:
             git fetch -q origin main
             git reset -q --hard origin/main
 
+            # update.py が失敗の種類を判断して ::warning:: / ::error:: を出す。
+            # ここで 0 以外が返るのは「知らせるべき失敗」のときだけ。
+            # 他社側の一時的な不調は警告のまま、ジョブは成功で通す。
             if ! python3 scripts/update.py; then
-              echo "::warning::一部のデータ取得に失敗しました。前回の値を保持します。"
               touch /tmp/fetch_failed
             fi
 
@@ -82,7 +84,7 @@ jobs:
       - name: 取得失敗を通知
         run: |
           if [ -f /tmp/fetch_failed ]; then
-            echo "::error::一部のデータ取得に失敗しました。サイトは前回のデータで公開されています。"
+            echo "::error::取得に失敗した系統があります。サイトは前回のデータで公開されているので表示は壊れていません。詳細は上のログを見てください。"
             exit 1
           fi
           echo "すべて正常に取得できました"
