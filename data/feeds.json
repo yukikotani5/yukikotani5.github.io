@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-09-20T22:56:48+00:00",
+ "updatedAt": "2026-09-21T23:48:13+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
@@ -10,10 +10,10 @@
   },
   "popular": {
    "label": "よく聴かれている回",
-   "title": "#47 ICUでの心臓血管外科術後管理",
-   "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
-   "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "2,799 回再生"
+   "title": "#92 やりたいこと、後回しにしていませんか？中堅医師のキャリアと責任",
+   "url": "https://www.youtube.com/watch?v=-TaiFyc9_-Y",
+   "thumbnail": "https://i.ytimg.com/vi/-TaiFyc9_-Y/mqdefault.jpg",
+   "metric": null
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "ショック管理の歴史から得た教訓とCRTの現在地",
-   "url": "https://voicy.jp/channel/848405/8205716",
-   "date": "2026-09-18",
+   "title": "CRTの測り方と使い道",
+   "url": "https://voicy.jp/channel/848405/8226855",
+   "date": "2026-09-22",
    "metric": null,
    "thumbnail": null
   },
@@ -48,7 +48,7 @@
    "title": "古くて新しいメイロン®︎",
    "url": "https://voicy.jp/channel/848405/7117573",
    "date": "2025-09-26",
-   "metric": "439 回再生",
+   "metric": "440 回再生",
    "thumbnail": null
   }
  }
