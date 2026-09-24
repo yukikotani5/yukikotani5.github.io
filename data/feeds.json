@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-09-23T23:24:56+00:00",
+ "updatedAt": "2026-09-24T23:44:39+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#90 ICUで頼られる看護師とは？集中治療医が語る「助かる」の中身【お便り回答】",
    "url": "https://www.youtube.com/watch?v=NDCej_tbwyg",
    "thumbnail": "https://i.ytimg.com/vi/NDCej_tbwyg/mqdefault.jpg",
-   "metric": "220 回再生"
+   "metric": "271 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "2,841 回再生"
+   "metric": "2,855 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "CRTの測り方と使い道",
-   "url": "https://voicy.jp/channel/848405/8226855",
-   "date": "2026-09-22",
+   "title": "ICUでの循環管理におけるクリニカルパール",
+   "url": "https://voicy.jp/channel/848405/8240787",
+   "date": "2026-09-25",
    "metric": null,
    "thumbnail": null
   },
