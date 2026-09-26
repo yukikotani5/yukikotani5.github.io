@@ -1,28 +1,30 @@
 {
- "updatedAt": "2026-09-25T23:47:05+00:00",
+ "updatedAt": "2026-09-26T23:21:42+00:00",
  "sources": {
   "publications": {
    "lastOk": "2026-09-25T23:47:05+00:00",
-   "failStreak": 0
+   "failStreak": 1,
+   "lastError": "HTTP Error 429: Too Many Requests",
+   "lastErrorAt": "2026-09-26T23:21:42+00:00"
   },
   "youtube": {
-   "lastOk": "2026-09-25T23:47:05+00:00",
+   "lastOk": "2026-09-26T23:21:42+00:00",
    "failStreak": 0
   },
   "note": {
-   "lastOk": "2026-09-25T23:47:05+00:00",
+   "lastOk": "2026-09-26T23:21:42+00:00",
    "failStreak": 0
   },
   "voicy": {
-   "lastOk": "2026-09-25T23:47:05+00:00",
+   "lastOk": "2026-09-26T23:21:42+00:00",
    "failStreak": 0
   },
   "media images": {
-   "lastOk": "2026-09-25T23:47:05+00:00",
+   "lastOk": "2026-09-26T23:21:42+00:00",
    "failStreak": 0
   },
   "sitemap": {
-   "lastOk": "2026-09-25T23:47:05+00:00",
+   "lastOk": "2026-09-26T23:21:42+00:00",
    "failStreak": 0
   }
  }
