@@ -92,9 +92,23 @@ def fetch(url, data=None, retries=5, headers=None, validate=None):
         except Exception as e:                                    # noqa: BLE001
             last = e
             wait = 2 ** i
+            code = getattr(e, "code", None)
+            if code in (429, 503):
+                # 「混んでいるから後で来て」という意味。1秒後に叩き直しても無駄で、
+                # むしろ相手の負荷を増やす。サーバーが待ち時間を指定していれば従う。
+                retry_after = None
+                try:
+                    retry_after = int(e.headers.get("Retry-After"))
+                except Exception:                                 # noqa: BLE001
+                    pass
+                wait = min(max(wait, retry_after or 20), 60)
             print(f"    retry {i + 1}/{retries} in {wait}s ({e})", file=sys.stderr)
             time.sleep(wait)
-    raise last
+
+    # どこに繋がらなかったのかを必ず残す。
+    # 「HTTP Error 429」だけでは、どのサービスが断ったのか後から追えない。
+    host = urllib.parse.urlsplit(url).netloc
+    raise RuntimeError(f"{host} から取得できませんでした（{retries}回試行）: {last}")
 
 
 def make_check(*path, allow_empty=True, label=""):
@@ -257,7 +271,25 @@ NON_ARTICLE_TITLE = re.compile(
 NON_ARTICLE_TYPES = {"Comment", "Published Erratum", "Editorial", "Letter"}
 
 
+def cached_citations():
+    """前回保存した被引用数を読む。OpenAlex に繋がらない日の代わりに使う。"""
+    p = os.path.join(DATA, "publications.json")
+    if not os.path.exists(p):
+        return {}
+    try:
+        with open(p, encoding="utf-8") as f:
+            return json.load(f).get("citationsCache") or {}
+    except Exception:                                           # noqa: BLE001
+        return {}
+
+
 def build_publications():
+    """論文一覧を作る。戻り値は (結果, OpenAlexのエラー or None)。
+
+    論文の一覧そのものは PubMed と ORCID から作る。OpenAlex は被引用数だけの担当で、
+    この数字は日単位でほとんど動かない。だから OpenAlex に繋がらない日は
+    前回の数字を使い、更新全体を止めない（止めると論文一覧まで古いままになる）。
+    """
     pm, oc = pubmed(), orcid()
     merged, by_doi, by_pmid, by_title = [], {}, {}, {}
 
@@ -284,12 +316,25 @@ def build_publications():
         added += 1
     print(f"    ORCID から新規追加: {added} 件")
 
-    cites = openalex()
+    openalex_error = None
+    try:
+        # 扱いを揃えるため {キー: 被引用数} に均す（キャッシュも同じ形で保存する）
+        cites = {k: (v.get("citations") or 0) for k, v in openalex().items()}
+    except Exception as e:                                      # noqa: BLE001
+        cites = cached_citations()
+        if not cites:
+            raise                       # 前回値も無ければ、さすがに続けられない
+        openalex_error = e
+        print(f"    繋がらないので前回の被引用数を使います（{e}）")
+
     matched = 0
     for r in merged:
-        c = (cites.get(r["doi"]) if r["doi"] else None) or cites.get("t:" + norm_title(r["title"]))
-        r["citations"] = (c or {}).get("citations", 0)
-        if c:
+        c = cites.get(r["doi"]) if r["doi"] else None
+        if c is None:
+            c = cites.get("t:" + norm_title(r["title"]))
+        # 被引用0回の論文もあるので、0 と「見つからない」を混同しないこと
+        r["citations"] = c or 0
+        if c is not None:
             matched += 1
         is_reply = bool(NON_ARTICLE_TITLE.match(r["title"])) or \
             bool(set(r["types"]) & NON_ARTICLE_TYPES)
@@ -319,7 +364,9 @@ def build_publications():
             "since": min((r["year"] for r in merged if r["year"]), default=None),
         },
         "top": [slim(r) for r in top],
-    }
+        # 次に OpenAlex が落ちたとき、この数字を使って更新を続ける
+        "citationsCache": cites,
+    }, openalex_error
 
 
 # ═══════════════════════════════════════════════════ YouTube
@@ -716,11 +763,14 @@ def main():
             return None
 
     def publications():
-        pubs = build_publications()
+        pubs, oa_error = build_publications()
         refuse_if_shrunk("publications.json", pubs["stats"])
         write("publications.json", {"updatedAt": now, **pubs})
         s = pubs["stats"]
         print(f"  論文 {s['total']} 件 / 被引用 {s['citations']:,} 回 → 上位{TOP_PUBLICATIONS}件を掲載")
+        # OpenAlex は被引用数だけの担当。落ちても前回値で続けられるので、
+        # 論文一覧そのもの（PubMed / ORCID）とは分けて記録する。
+        record("openalex", oa_error)
 
     attempt("publications", publications)
 
