@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-09-30T00:03:07+00:00",
+ "updatedAt": "2026-10-01T00:20:08+00:00",
  "stats": {
   "total": 95,
   "articles": 75,
   "firstAuthor": 23,
-  "citations": 1540,
+  "citations": 1542,
   "since": 2016
  },
  "top": [
@@ -12,7 +12,7 @@
    "title": "A Randomized Trial of Intravenous Amino Acids for Kidney Protection",
    "journal": "N Engl J Med",
    "year": 2024,
-   "citations": 187,
+   "citations": 188,
    "doi": "10.1056/nejmoa2403769",
    "url": "https://doi.org/10.1056/nejmoa2403769",
    "position": "middle",
@@ -95,8 +95,8 @@
   }
  ],
  "citationsCache": {
-  "10.1056/nejmoa2403769": 187,
-  "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 187,
+  "10.1056/nejmoa2403769": 188,
+  "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 188,
   "10.1186/s13054-023-04322-y": 174,
   "t:anupdatednorepinephrineequivalentscoreinintensivecareasamarkerofshockseverity": 174,
   "10.1001/jama.2023.10598": 121,
@@ -134,8 +134,8 @@
   "t:riskfactorsforperipheralintravascularcatheterrelatedphlebitisincriticallyillpatientsanalys": 36,
   "10.1053/j.jvca.2023.09.037": 33,
   "t:methylenebluereducesmortalityincriticallyillandperioperativepatientsametaanalysisofrandomi": 33,
-  "10.1186/s13613-021-00969-4": 22,
-  "t:theimpactofrelativehypotensiononacutekidneyinjuryprogressionaftercardiacsurgeryamulticente": 22,
+  "10.1186/s13613-021-00969-4": 23,
+  "t:theimpactofrelativehypotensiononacutekidneyinjuryprogressionaftercardiacsurgeryamulticente": 23,
   "10.1002/14651858.cd013494.pub2": 22,
   "t:highversuslowbloodpressuretargetsforcardiacsurgerywhileoncardiopulmonarybypass": 22,
   "10.1053/j.jvca.2023.02.045": 22,
@@ -187,8 +187,6 @@
   "t:contaminationofbloodculturesdrawnfromarterialcathetersversusvenipunctureorvenouscathetersi": 5,
   "10.1186/s13054-025-05335-5": 4,
   "t:standardizingpersistentandchroniccriticalillnessimpactofdefinitionsvariabilityonprevalence": 4,
-  "10.1007/s00134-025-08030-9": 4,
-  "t:neurotoxicityofsedativedrugsamatterofconcerninadults": 4,
   "10.1155/emmi/4457109": 3,
   "t:impactofnoradrenalineadministrationdosageontheoccurrenceofperipheralintravenouscatheterrel": 3,
   "10.1186/s13613-022-01073-x": 5,
@@ -203,6 +201,8 @@
   "t:effectsofearlypostoperativeneurocognitivedisordersonclinicallyrelevantoutcomesametaanalysi": 4,
   "10.1186/s13054-023-04547-x": 4,
   "t:authorsreplytothecommentfrombenavideszoraetal": 4,
+  "10.1007/s00134-025-08030-9": 4,
+  "t:neurotoxicityofsedativedrugsamatterofconcerninadults": 4,
   "10.1371/journal.pone.0320583": 2,
   "t:riskfactorsofphlebitisinpatientsadmittedtotheintensivecareunitvaryaccordingtothedurationof": 2,
   "10.1186/s13054-023-04404-x": 7,
