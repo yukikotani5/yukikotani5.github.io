@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-10-01T00:20:08+00:00",
+ "updatedAt": "2026-10-02T00:30:01+00:00",
  "stats": {
   "total": 95,
   "articles": 75,
   "firstAuthor": 23,
-  "citations": 1542,
+  "citations": 1544,
   "since": 2016
  },
  "top": [
@@ -29,7 +29,7 @@
    "title": "An updated \"norepinephrine equivalent\" score in intensive care as a marker of shock severity",
    "journal": "Crit Care",
    "year": 2023,
-   "citations": 174,
+   "citations": 176,
    "doi": "10.1186/s13054-023-04322-y",
    "url": "https://doi.org/10.1186/s13054-023-04322-y",
    "position": "first",
@@ -97,8 +97,8 @@
  "citationsCache": {
   "10.1056/nejmoa2403769": 188,
   "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 188,
-  "10.1186/s13054-023-04322-y": 174,
-  "t:anupdatednorepinephrineequivalentscoreinintensivecareasamarkerofshockseverity": 174,
+  "10.1186/s13054-023-04322-y": 176,
+  "t:anupdatednorepinephrineequivalentscoreinintensivecareasamarkerofshockseverity": 176,
   "10.1001/jama.2023.10598": 121,
   "t:continuousvsintermittentmeropenemadministrationincriticallyillpatientswithsepsis": 121,
   "10.1186/s13054-023-04431-8": 94,
@@ -179,8 +179,6 @@
   "t:hypotensioninducedbytheconcomitantuseofacalciumchannelblockerandclarithromycin": 11,
   "10.1053/j.jvca.2024.07.001": 8,
   "t:theeffectsofcorticosteroidsonsurvivalinpediatricandnonelderlyadultpatientsundergoingcardia": 8,
-  "10.1136/bcr-2017-220392": 6,
-  "t:arupturedbronchialarteryaneurysmwithmassivehaemoptysis": 6,
   "10.1016/j.cct.2023.107319": 6,
   "t:highdoseesomeprazoleasanantiinflammatoryagentinsepsisprotocolforarandomizedcontrolledtrial": 6,
   "10.1093/cid/ciaf260": 5,
@@ -189,6 +187,8 @@
   "t:standardizingpersistentandchroniccriticalillnessimpactofdefinitionsvariabilityonprevalence": 4,
   "10.1155/emmi/4457109": 3,
   "t:impactofnoradrenalineadministrationdosageontheoccurrenceofperipheralintravenouscatheterrel": 3,
+  "10.1136/bcr-2017-220392": 6,
+  "t:arupturedbronchialarteryaneurysmwithmassivehaemoptysis": 6,
   "10.1186/s13613-022-01073-x": 5,
   "t:aburdenoffluidsodiumandchlorideduetointravenousfluidtherapyinpatientswithrespiratorysuppor": 5,
   "10.3389/fmed.2022.965706": 5,
