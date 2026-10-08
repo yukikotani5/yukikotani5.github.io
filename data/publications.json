@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-10-07T00:20:25+00:00",
+ "updatedAt": "2026-10-08T00:41:38+00:00",
  "stats": {
   "total": 96,
   "articles": 76,
   "firstAuthor": 23,
-  "citations": 1552,
+  "citations": 1555,
   "since": 2016
  },
  "top": [
@@ -125,8 +125,8 @@
   "t:haemodynamicmanagementofsepticshock": 16,
   "10.1186/s13054-025-05467-8": 15,
   "t:volatilesedationincriticallyilladultsundergoingmechanicalventilationametaanalysisofrandomi": 15,
-  "10.1097/ccm.0000000000007124": 11,
-  "t:clinicalcriteriaforthedefinitionofrefractorysepticshockajointdelphiconsensusfromthesociety": 11,
+  "10.1097/ccm.0000000000007124": 14,
+  "t:clinicalcriteriaforthedefinitionofrefractorysepticshockajointdelphiconsensusfromthesociety": 14,
   "10.1007/s00134-026-08344-2": 9,
   "10.1186/s40560-020-00518-4": 46,
   "t:occurrenceandincidencerateofperipheralintravascularcatheterrelatedphlebitisandcomplication": 46,
