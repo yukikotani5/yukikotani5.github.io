@@ -120,6 +120,8 @@ const dot = (id) => `<span class="ic" data-p="${esc(id)}" aria-hidden="true"></s
    ここで news.json から直近の回を拾い、「進路に迷っているとき」に常に一行出す。
    応募フォームのURLは毎月変わるため、常設のリンクは持たず news.json の url をそのまま使う。 */
 const SESSION_MATCH = /説明会/;
+// 終わった印。「受付終了」は申込締切（開催はこれから）、「開催終了」は会自体が済んだもの
+const DONE = new Set(["受付終了", "開催終了"]);
 // 次回が未定のときの案内先。亀田ICUの公式アカウント（2026-10-10 に本人から）
 const SESSION_X = "https://x.com/kameda_icu";
 
@@ -127,7 +129,7 @@ function sessionNotice(news) {
   const today = new Date().toISOString().slice(0, 10);
   const next = (news.items || [])
     .filter((n) => SESSION_MATCH.test(n.title || ""))
-    .filter((n) => String(n.date || "") >= today && n.status !== "受付終了")
+    .filter((n) => String(n.date || "") >= today && !DONE.has(n.status))
     .sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
 
   const base = "亀田ICUでは<b>毎月オンライン説明会</b>をひらいています。";
@@ -264,10 +266,11 @@ function renderNews(news, writings, talks, media) {
 
   el.innerHTML = list.map((n) => {
     const soon = n.date >= today;
-    const closed = n.status === "受付終了";
+    const closed = DONE.has(n.status);
     // これからの予定でも受付が終わっていれば、参加を促す見た目にはしない
     const open = soon && !closed;
-    const label = closed ? "受付終了" : soon ? "開催予定" : n.type;
+    // 終わっているときは、その理由（受付終了／開催終了）をそのまま出す
+    const label = closed ? n.status : soon ? "開催予定" : n.type;
     const title = n.url
       ? `<a href="${esc(n.url)}" ${EXT}>${esc(n.title)}</a>`
       : esc(n.title);
