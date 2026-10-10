@@ -100,17 +100,30 @@ def build(p):
             },
         },
         # 留学は Visiting Researcher であって卒業生ではないので alumniOf に入れない
-        "alumniOf": {
-            "@type": "CollegeOrUniversity",
-            "name": "京都大学 医学部 医学科",
-            "url": "https://www.kyoto-u.ac.jp/",
-        },
+        "alumniOf": [
+            {"@type": "CollegeOrUniversity",
+             "name": "京都大学 医学部 医学科",
+             "url": "https://www.kyoto-u.ac.jp/"},
+            {"@type": "CollegeOrUniversity",
+             "name": "東京女子医科大学大学院 集中治療医学",
+             "url": "https://www.twmu.ac.jp/"},
+        ],
     }
 
     # 専門医資格・関心領域は highlights の実データから拾う（勝手に足さない）
     hl = {h["label"]: h["detail"] for h in p.get("highlights", [])}
+    # 学位。profile.json の activityGroups「学位」と内容を合わせること
+    person["hasCredential"] = [{
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "学位",
+        "educationalLevel": "博士",
+        "name": "博士（医学）",
+        "recognizedBy": {"@type": "CollegeOrUniversity",
+                         "name": "東京女子医科大学",
+                         "url": "https://www.twmu.ac.jp/"},
+    }]
     if "専門医" in hl:
-        person["hasCredential"] = [
+        person["hasCredential"] += [
             {"@type": "EducationalOccupationalCredential",
              "credentialCategory": "専門医資格", "name": n.strip()}
             for n in re.split(r"[／/]", hl["専門医"]) if n.strip()

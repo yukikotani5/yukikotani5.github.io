@@ -175,6 +175,42 @@ def pubmed():
     return out
 
 
+MONTHS = {m: i for i, m in enumerate(
+    ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], 1)}
+
+
+def node_date(n):
+    """PubMed の日付ノードを YYYY-MM-DD に均す。
+
+    月は "Jan" のことも "01" のこともあり、日が無いこともある。
+    足りないぶんは 1 で埋める（並べ替えに使うだけなので支障はない）。
+    """
+    if n is None:
+        return None
+    y = n.findtext("Year")
+    if not y or not y.isdigit():
+        return None
+    mo = (n.findtext("Month") or "").strip()
+    m = MONTHS.get(mo[:3].title(), int(mo) if mo.isdigit() else 1)
+    d = (n.findtext("Day") or "").strip()
+    return "%04d-%02d-%02d" % (int(y), m, int(d) if d.isdigit() else 1)
+
+
+def pub_date(art):
+    """いつ世に出たかを日付で返す。
+
+    年だけでは「最新の1本」を決められない（同じ年の論文が何本もある）。
+    電子版の公開日（ArticleDate）が実際に出た日に一番近いので優先し、
+    無ければ誌面の発行年月を使う。
+    """
+    for path in (".//ArticleDate", ".//JournalIssue/PubDate"):
+        d = node_date(art.find(path))
+        if d:
+            return d
+    return None
+
+
 def parse_pubmed(art):
     tnode = art.find(".//ArticleTitle")
     title = re.sub(r"\.$", "", "".join(tnode.itertext()).strip()) if tnode is not None else ""
@@ -202,6 +238,7 @@ def parse_pubmed(art):
         "journal": (art.findtext(".//Journal/ISOAbbreviation")
                     or art.findtext(".//Journal/Title") or ""),
         "year": int(year) if year and year.isdigit() else None,
+        "date": pub_date(art),
         "doi": norm_doi(doi),
         "pmid": art.findtext(".//PMID"),
         "authors": authors,
@@ -227,12 +264,24 @@ def orcid():
         ids = {e["external-id-type"]: e["external-id-value"]
                for e in g.get("external-ids", {}).get("external-id", [])}
         pd = s.get("publication-date") or {}
-        yr = (pd.get("year") or {}).get("value") if isinstance(pd.get("year"), dict) else None
+
+        def pv(k):
+            v = pd.get(k)
+            return (v or {}).get("value") if isinstance(v, dict) else None
+
+        yr, mo, dy = pv("year"), pv("month"), pv("day")
+        date = None
+        if yr and str(yr).isdigit():
+            date = "%04d-%02d-%02d" % (
+                int(yr),
+                int(mo) if mo and str(mo).isdigit() else 1,
+                int(dy) if dy and str(dy).isdigit() else 1)
         jt = s.get("journal-title")
         out.append({
             "title": (s.get("title", {}).get("title", {}) or {}).get("value", "").strip(),
             "journal": jt.get("value") if isinstance(jt, dict) else "",
             "year": int(yr) if yr and str(yr).isdigit() else None,
+            "date": date,
             "doi": norm_doi(ids.get("doi")), "pmid": ids.get("pmid"),
             "authors": [], "authorCount": 0, "position": None, "types": [],
         })
@@ -344,12 +393,26 @@ def build_publications():
     print(f"    被引用数を紐づけ: {matched}/{len(merged)} 件")
 
     arts = [r for r in merged if r["article"]]
-    top = sorted(arts, key=lambda r: (-(r["citations"] or 0), -(r["year"] or 0)))[:TOP_PUBLICATIONS]
+
+    def pmid_num(r):
+        v = str(r.get("pmid") or "")
+        return int(v) if v.isdigit() else 0
+
+    # 最新の1本。日付が取れたものだけを候補にする
+    # （年しか無いものを混ぜると、同じ年の中で順序を決められない）。
+    # 同じ日なら PMID が大きいほうを新しいとみなす。
+    dated = [r for r in arts if r.get("date")]
+    latest = max(dated, key=lambda r: (r["date"], pmid_num(r))) if dated else None
+
+    # 被引用の一覧からは最新を外す。同じ論文が上下に2回出ると読みにくい。
+    pool = [r for r in arts if r is not latest]
+    top = sorted(pool, key=lambda r: (-(r["citations"] or 0), -(r["year"] or 0)))[:TOP_PUBLICATIONS]
 
     def slim(r):
         au = r["authors"]
         return {
             "title": r["title"], "journal": r["journal"], "year": r["year"],
+            "date": r.get("date"),
             "citations": r["citations"], "doi": r["doi"], "url": r["url"],
             "position": r["position"], "authorCount": r["authorCount"],
             "authors": (au[:3] + ["…", au[-1]]) if len(au) > 5 else au,
@@ -363,6 +426,7 @@ def build_publications():
             "citations": sum(r["citations"] or 0 for r in merged),
             "since": min((r["year"] for r in merged if r["year"]), default=None),
         },
+        "latest": slim(latest) if latest else None,
         "top": [slim(r) for r in top],
         # 次に OpenAlex が落ちたとき、この数字を使って更新を続ける
         "citationsCache": cites,

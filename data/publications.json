@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-10T00:28:22+00:00",
+ "updatedAt": "2026-10-10T09:10:54+00:00",
  "stats": {
   "total": 96,
   "articles": 76,
@@ -7,11 +7,30 @@
   "citations": 1518,
   "since": 2016
  },
+ "latest": {
+  "title": "Continuous vs intermittent meropenem administration in critically ill patients and renal function. A secondary post-hoc analysis of the MERCY trial",
+  "journal": "Med Intensiva (Engl Ed)",
+  "year": 2026,
+  "date": "2026-10-01",
+  "citations": 0,
+  "doi": "10.1016/j.medine.2026.502628",
+  "url": "https://doi.org/10.1016/j.medine.2026.502628",
+  "position": "middle",
+  "authorCount": 24,
+  "authors": [
+   "Baiardo Redaelli M",
+   "Pontillo D",
+   "Toffoletto F",
+   "…",
+   "Monti G"
+  ]
+ },
  "top": [
   {
    "title": "A Randomized Trial of Intravenous Amino Acids for Kidney Protection",
    "journal": "N Engl J Med",
    "year": 2024,
+   "date": "2024-06-12",
    "citations": 188,
    "doi": "10.1056/nejmoa2403769",
    "url": "https://doi.org/10.1056/nejmoa2403769",
@@ -29,6 +48,7 @@
    "title": "An updated \"norepinephrine equivalent\" score in intensive care as a marker of shock severity",
    "journal": "Crit Care",
    "year": 2023,
+   "date": "2023-01-20",
    "citations": 169,
    "doi": "10.1186/s13054-023-04322-y",
    "url": "https://doi.org/10.1186/s13054-023-04322-y",
@@ -46,6 +66,7 @@
    "title": "Continuous vs Intermittent Meropenem Administration in Critically Ill Patients With Sepsis: The MERCY Randomized Clinical Trial",
    "journal": "JAMA",
    "year": 2023,
+   "date": "2023-07-11",
    "citations": 114,
    "doi": "10.1001/jama.2023.10598",
    "url": "https://doi.org/10.1001/jama.2023.10598",
@@ -63,6 +84,7 @@
    "title": "Propofol and survival: an updated meta-analysis of randomized clinical trials",
    "journal": "Crit Care",
    "year": 2023,
+   "date": "2023-04-12",
    "citations": 95,
    "doi": "10.1186/s13054-023-04431-8",
    "url": "https://doi.org/10.1186/s13054-023-04431-8",
@@ -80,6 +102,7 @@
    "title": "Etomidate as an induction agent for endotracheal intubation in critically ill patients: A meta-analysis of randomized trials",
    "journal": "J Crit Care",
    "year": 2023,
+   "date": "2023-04-29",
    "citations": 62,
    "doi": "10.1016/j.jcrc.2023.154317",
    "url": "https://doi.org/10.1016/j.jcrc.2023.154317",

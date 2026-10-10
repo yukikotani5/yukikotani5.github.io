@@ -42,12 +42,30 @@
           "addressCountry": "JP"
         }
       },
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "京都大学 医学部 医学科",
-        "url": "https://www.kyoto-u.ac.jp/"
-      },
+      "alumniOf": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "京都大学 医学部 医学科",
+          "url": "https://www.kyoto-u.ac.jp/"
+        },
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "東京女子医科大学大学院 集中治療医学",
+          "url": "https://www.twmu.ac.jp/"
+        }
+      ],
       "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "学位",
+          "educationalLevel": "博士",
+          "name": "博士（医学）",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "東京女子医科大学",
+            "url": "https://www.twmu.ac.jp/"
+          }
+        },
         {
           "@type": "EducationalOccupationalCredential",
           "credentialCategory": "専門医資格",
@@ -228,12 +246,18 @@
     <p class="sec-kicker">Research</p>
     <h2 class="sec-title">研究業績</h2>
     <p class="sec-lead">
-      国際誌に発表した<strong>英文論文</strong>のうち、よく引用されているものを5本。全体はORCIDでご覧いただけます。
+      国際誌に発表した<strong>英文論文</strong>から、最新の1本と、よく引用されているものを5本。全体はORCIDでご覧いただけます。
       日本語で書いたものは<a href="#writings">下の和文論文・原稿執筆</a>にまとめています。
       <span class="auto-badge" title="PubMed・ORCID・OpenAlexから毎日自動で更新されます">自動更新</span>
     </p>
 
     <ul class="stats" id="pubStats"></ul>
+
+    <!-- 最新の1本。被引用順だと出たばかりの論文が埋もれるので、先に置く -->
+    <h3 class="pub-head" id="pubLatestHead" hidden>最新の論文</h3>
+    <ol class="pub-list" id="pubLatest"></ol>
+
+    <h3 class="pub-head" id="pubTopHead" hidden>よく引用されている論文</h3>
     <ol class="pub-list" id="pubList"><li class="loading">読み込み中…</li></ol>
     <p class="panel-foot">
       <a class="more" id="pubAll" href="https://orcid.org/0000-0002-9532-2859"

@@ -33,6 +33,13 @@ const fmtDate = (d) => {
   return m ? `${m[1]}.${m[2]}.${m[3]}` : String(d);
 };
 
+/* 論文は「日」まで分からないことが多く、update.py が 1 日で埋めている。
+   そのまま出すと実際には分からない日付を断定することになるので、年月までにする。 */
+const fmtYM = (d) => {
+  const m = String(d || "").match(/(\d{4})-(\d{2})/);
+  return m ? `${m[1]}年${Number(m[2])}月` : "";
+};
+
 /* ───────────────────────── nav ───────────────────────── */
 function initNav() {
   const nav = $("#nav"), toggle = $("#navToggle"), links = $(".nav-links");
@@ -286,31 +293,43 @@ function renderResearch(d) {
       + `うち原著論文が${esc(nf(s.articles))}本、筆頭著者のものが${esc(nf(s.firstAuthor))}本です。</li>`
     : "";
 
-  const top = d.top || [];
-  if (!top.length) {
-    $("#pubList").innerHTML = `<li class="empty">うまく読み込めませんでした。</li>`;
-    return;
-  }
-  $("#pubList").innerHTML = top.map((p, i) => {
+  // 立場をはっきり書く。共著の大規模試験を筆頭論文と見分けがつかない形で
+  // 並べると、実際より大きく見せることになる。
+  const item = (p, isLatest) => {
     const au = (p.authors || []).join(", ");
     const title = p.url ? `<a href="${esc(p.url)}" ${EXT}>${esc(p.title)}</a>` : esc(p.title);
-    // 立場をはっきり書く。共著の大規模試験を筆頭論文と見分けがつかない形で
-    // 並べると、実際より大きく見せることになる。
     const role = p.position === "first" ? "筆頭著者"
                : p.position === "last" ? "最終著者" : "共著";
+    // 出たばかりの論文は被引用が 0 で当たり前。0 と書くより、いつ出たかを示すほうが有用。
+    const when = isLatest ? (fmtYM(p.date) || p.year || "") : (p.year || "");
+    const cite = (!isLatest || p.citations)
+      ? `<p class="pub-cite">被引用 ${esc(nf(p.citations))} 回</p>` : "";
     return `<li class="pub${p.position === "first" ? " is-first" : ""}">
       <div class="pub-body">
         <div class="pub-meta">
-          <span class="pub-year">${esc(p.year || "")}</span>
+          <span class="pub-year">${esc(when)}</span>
           ${p.journal ? `<span class="pub-jr">${esc(p.journal)}</span>` : ""}
           <span class="tag${p.position === "first" ? " tag-first" : ""}">${esc(role)}</span>
         </div>
         <p class="pub-t">${title}</p>
         ${au ? `<p class="pub-au">${esc(au)}</p>` : ""}
-        <p class="pub-cite">被引用 ${esc(nf(p.citations))} 回</p>
+        ${cite}
       </div>
     </li>`;
-  }).join("");
+  };
+
+  // 最新の1本。被引用順より前に置く（新しい仕事が埋もれないように）
+  const latest = d.latest;
+  $("#pubLatest").innerHTML = latest ? item(latest, true) : "";
+  $("#pubLatestHead").hidden = !latest;
+  $("#pubTopHead").hidden = !latest;      // 最新が出ないときは見出しの対比が不要
+
+  const top = d.top || [];
+  if (!top.length) {
+    $("#pubList").innerHTML = `<li class="empty">うまく読み込めませんでした。</li>`;
+    return;
+  }
+  $("#pubList").innerHTML = top.map((p) => item(p, false)).join("");
 }
 
 /* ───────────────────────── 一覧の折りたたみ ─────────────────────────
