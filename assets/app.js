@@ -114,7 +114,43 @@ function initTrace() {
 /* ───────────────────────── profile ───────────────────────── */
 const dot = (id) => `<span class="ic" data-p="${esc(id)}" aria-hidden="true"></span>`;
 
-function renderProfile(p) {
+/* ───────────── 毎月の説明会の常設案内 ─────────────
+   説明会は毎月あるのに、NEWS は日付つきの1件ずつなので、
+   その月を登録し忘れると入口ごと消える（2026年9月が実際にそうなった）。
+   ここで news.json から直近の回を拾い、「進路に迷っているとき」に常に一行出す。
+   応募フォームのURLは毎月変わるため、常設のリンクは持たず news.json の url をそのまま使う。 */
+const SESSION_MATCH = /説明会/;
+
+function sessionNotice(news) {
+  const today = new Date().toISOString().slice(0, 10);
+  const next = (news.items || [])
+    .filter((n) => SESSION_MATCH.test(n.title || ""))
+    .filter((n) => String(n.date || "") >= today && n.status !== "受付終了")
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
+
+  const base = "亀田ICUでは<b>毎月オンライン説明会</b>をひらいています。";
+  if (!next) {
+    // 日程が未定でも「やっている」ことは伝え続ける
+    return base + "次回の日程が決まり次第、ここでお知らせします。";
+  }
+  const when = fmtJPDate(next.date);
+  if (!next.url) {
+    // 日程だけ先に決まることがある。申し込み方法は後から入る
+    return base + `次回は<b>${esc(when)}</b>です。申し込み方法が決まり次第、ここに出します。`;
+  }
+  // ボタンに日付を入れる。「何月分の申し込みか」を押す側が取り違えないように
+  return base
+    + `<a class="offer-cta" href="${esc(next.url)}" ${EXT}>${esc(when)}の回に申し込む →</a>`;
+}
+
+const fmtJPDate = (d) => {
+  const m = String(d || "").match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return String(d || "");
+  const w = "日月火水木金土"[new Date(+m[1], +m[2] - 1, +m[3]).getDay()];
+  return `${Number(m[2])}月${Number(m[3])}日（${w}）`;
+};
+
+function renderProfile(p, news) {
   // タブ名と検索結果には「何者か」が要るので、ミッション文ではなく役割を使う
   document.title = `${p.name} | ${p.roles || p.tagline}`;
   $("#heroName").textContent    = p.name;
@@ -169,10 +205,14 @@ function renderProfile(p) {
   // 3種類の訪問者（若手／編集者／学会）がそれぞれ自分ごとだと分かるようにする。
   // ここがこのサイトの「窓口」としての実質。
   const offers = p.offers || [];
+  // 「進路に迷っているとき」に来る人こそ説明会の対象なので、そこに添える
+  const notice = sessionNotice(news || {});
   $("#offers").innerHTML = offers.length
     ? `<h3 class="offers-head">こんなときに</h3>
        <ul class="offers-list">${offers.map((o) => `
-         <li><b>${esc(o.who)}</b><span>${esc(o.body)}</span></li>`).join("")}</ul>`
+         <li><b>${esc(o.who)}</b><span>${esc(o.body)}${
+           /進路/.test(o.who) ? `<span class="offer-note">${notice}</span>` : ""
+         }</span></li>`).join("")}</ul>`
     : "";
 
   const sel = $("#fType");
@@ -566,7 +606,7 @@ function initForm() {
     settle(jget("data/news.json")),
   ]);
 
-  if (prof.ok) renderProfile(prof.v);
+  if (prof.ok) renderProfile(prof.v, news.ok ? news.v : {});
   if (media.ok) renderMedia(media.v.items);
   if (writings.ok) renderWritings(writings.v.items);
   if (talks.ok) renderTalks(talks.v.items);
