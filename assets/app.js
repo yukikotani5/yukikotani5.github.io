@@ -120,6 +120,8 @@ const dot = (id) => `<span class="ic" data-p="${esc(id)}" aria-hidden="true"></s
    ここで news.json から直近の回を拾い、「進路に迷っているとき」に常に一行出す。
    応募フォームのURLは毎月変わるため、常設のリンクは持たず news.json の url をそのまま使う。 */
 const SESSION_MATCH = /説明会/;
+// 次回が未定のときの案内先。亀田ICUの公式アカウント（2026-10-10 に本人から）
+const SESSION_X = "https://x.com/kameda_icu";
 
 function sessionNotice(news) {
   const today = new Date().toISOString().slice(0, 10);
@@ -130,24 +132,26 @@ function sessionNotice(news) {
 
   const base = "亀田ICUでは<b>毎月オンライン説明会</b>をひらいています。";
   if (!next) {
-    // 日程が未定でも「やっている」ことは伝え続ける
-    return base + "次回の日程が決まり次第、ここでお知らせします。";
+    // 日程が未定でも「やっている」ことは伝え続ける。行き先として X を案内する
+    return base + "次回の日程は、ここと"
+      + `<a href="${SESSION_X}" ${EXT}>亀田ICUのX</a>でお知らせします。`;
   }
-  const when = fmtJPDate(next.date);
+  // 時刻は任意。入っていれば「10月29日（木）20:00〜」と続ける
+  const when = fmtJPDate(next.date) + (next.time ? ` ${esc(next.time)}` : "");
   if (!next.url) {
     // 日程だけ先に決まることがある。申し込み方法は後から入る
-    return base + `次回は<b>${esc(when)}</b>です。申し込み方法が決まり次第、ここに出します。`;
+    return base + `次回は<b>${when}</b>です。申し込み方法が決まり次第、ここに出します。`;
   }
   // ボタンに日付を入れる。「何月分の申し込みか」を押す側が取り違えないように
   return base
-    + `<a class="offer-cta" href="${esc(next.url)}" ${EXT}>${esc(when)}の回に申し込む →</a>`;
+    + `<a class="offer-cta" href="${esc(next.url)}" ${EXT}>${when}の回に申し込む →</a>`;
 }
 
 const fmtJPDate = (d) => {
   const m = String(d || "").match(/(\d{4})-(\d{2})-(\d{2})/);
   if (!m) return String(d || "");
   const w = "日月火水木金土"[new Date(+m[1], +m[2] - 1, +m[3]).getDay()];
-  return `${Number(m[2])}月${Number(m[3])}日（${w}）`;
+  return esc(`${Number(m[2])}月${Number(m[3])}日（${w}）`);
 };
 
 function renderProfile(p, news) {
@@ -233,7 +237,7 @@ function renderNews(news, writings, talks, media) {
 
   const items = [
     ...(news?.items || []).map((n) => ({
-      date: norm(n.date), type: n.type || "お知らせ", status: n.status,
+      date: norm(n.date), type: n.type || "お知らせ", status: n.status, time: n.time,
       title: n.title, body: n.body, url: n.url, cta: n.cta,
     })),
     ...(writings?.items || []).map((w) => ({
@@ -271,7 +275,8 @@ function renderNews(news, writings, talks, media) {
       ? `<a class="news-cta" href="${esc(n.url)}" ${EXT}>${esc(n.cta || "詳しく見る")}</a>`
       : "";
     return `<li class="news-item${open ? " is-open" : ""}${closed ? " is-closed" : ""}">
-      <span class="news-date">${esc(String(n.date).slice(0, 10).replace(/-/g, "."))}</span>
+      <span class="news-date">${esc(String(n.date).slice(0, 10).replace(/-/g, "."))}${
+        n.time ? `<span class="news-time">${esc(n.time)}</span>` : ""}</span>
       <span class="news-type">${esc(label)}</span>
       <span class="news-body">
         <span class="news-title">${title}</span>
