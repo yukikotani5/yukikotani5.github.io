@@ -259,7 +259,17 @@ function renderNews(news, writings, talks, media) {
   // これからの予定を先に、そのあと新しい順に
   const upcoming = items.filter((x) => x.date >= today).sort((a, b) => a.date.localeCompare(b.date));
   const past = items.filter((x) => x.date < today).sort((a, b) => b.date.localeCompare(a.date));
-  const list = [...upcoming, ...past].slice(0, 5);
+  // 説明会は毎月あるので、終わった回を全部並べると NEWS が説明会だけで埋まる。
+  // 終わった回は直近の1件だけ残す。「毎月ひらいている」ことは
+  // ABOUT の常設案内（sessionNotice）が伝え続けるので、情報は落ちない。
+  let shownSession = false;
+  const pastTrimmed = past.filter((x) => {
+    if (!SESSION_MATCH.test(x.title || "")) return true;
+    if (shownSession) return false;
+    shownSession = true;
+    return true;
+  });
+  const list = [...upcoming, ...pastTrimmed].slice(0, 5);
 
   const el = $("#newsList");
   if (!list.length) { el.innerHTML = ""; return; }
