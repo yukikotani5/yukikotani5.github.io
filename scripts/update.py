@@ -446,6 +446,64 @@ def yt_number(text):
     return int(m.group(1)) if m else 0
 
 
+# 再生回数だけで出来ている表記（"273" / "1.2万" / "2,319"）。
+# 同じ行に並ぶ「3 か月前」を拾わないよう、全体一致で判定する。
+VIEWS_ONLY_RE = re.compile(r"^\s*[\d,.]+\s*[万億]?\s*$")
+
+
+def yt_views_text(rows):
+    """再生回数の表記を取り出す。無ければ None。
+
+    2026年9月までは「2,319回視聴」という文字列だったが、YouTube が表記を変え、
+    いまは数字だけ（例: "273"）で返ってくる。両方に対応する。
+
+    注意: 同じ行に「3 か月前」のような相対日時も並んでいる。
+    「数字を含む部分」を拾うと 3回再生になってしまうので、
+    数字だけで出来ている部分を選ぶこと。
+    """
+    for row in rows:                      # 旧表記を優先（確実に再生回数だとわかる）
+        for part in row.get("metadataParts", []):
+            t = (part.get("text") or {}).get("content") or ""
+            if "視聴" in t or "view" in t.lower():
+                return t
+    for row in rows:                      # 新表記
+        for part in row.get("metadataParts", []):
+            t = (part.get("text") or {}).get("content") or ""
+            if VIEWS_ONLY_RE.match(t):
+                return t
+    return None
+
+
+# ICUトークの通常回は数十分。YouTube のショート動画は最長3分なので、
+# 5分を境にすれば取り違えようがない。
+SHORT_MAX_SECONDS = 5 * 60
+
+
+def hhmmss(text):
+    """「1:28」「1:02:03」を秒にする。読めなければ None。"""
+    if not text or not re.match(r"^\d+(:\d{2})+$", text):
+        return None
+    sec = 0
+    for part in text.split(":"):
+        sec = sec * 60 + int(part)
+    return sec
+
+
+def is_short(title, duration_text):
+    """ショート動画かどうか。
+
+    手がかりを2つ併用する。片方だけだと取りこぼす。
+      - 再生時間が短い（YouTube のショートは最長3分）
+      - タイトルに #Shorts が付いている（このチャンネルの付け方）
+    YouTube の作りが変わって長さが取れなくなってもタイトルで拾え、
+    タイトルに付け忘れても長さで拾える。
+    """
+    sec = hhmmss(duration_text)
+    if sec is not None and sec <= SHORT_MAX_SECONDS:
+        return True
+    return "#shorts" in (title or "").lower()
+
+
 def youtube():
     """
     アップロード再生リストのページから全エピソードと再生回数を取る。
@@ -469,19 +527,24 @@ def youtube():
             if lv and lv.get("contentId") not in seen:
                 meta = (lv.get("metadata") or {}).get("lockupMetadataViewModel") or {}
                 title = (meta.get("title") or {}).get("content")
-                views = None
                 rows = (((meta.get("metadata") or {}).get("contentMetadataViewModel") or {})
                         .get("metadataRows") or [])
-                for row in rows:
-                    for part in row.get("metadataParts", []):
-                        t = (part.get("text") or {}).get("content", "")
-                        if "視聴" in t:
-                            views = t
+                views = yt_views_text(rows)
+                # サムネイル右下の再生時間。ショート動画の判別に使う
+                dur = None
+                tv = (lv.get("contentImage") or {}).get("thumbnailViewModel") or {}
+                for ov in tv.get("overlays") or []:
+                    for b in ((ov.get("thumbnailBottomOverlayViewModel") or {})
+                              .get("badges") or []):
+                        t = (b.get("thumbnailBadgeViewModel") or {}).get("text")
+                        if hhmmss(t) is not None:
+                            dur = t
                 if title:
                     seen.add(lv["contentId"])
                     items.append({
-                        "id": lv["contentId"], "title": title,
-                        "views": yt_number(views), "viewsText": views,
+                        "id": lv["contentId"], "title": title, "duration": dur,
+                        "views": yt_number(views) if views else None,
+                        "viewsText": views,
                     })
             for v in o.values():
                 walk(v)
@@ -492,7 +555,21 @@ def youtube():
     walk(data)
     if not items:
         raise RuntimeError("エピソードを1本も取得できませんでした")
+
+    # ショート動画は「回」ではないので、最新回にも最多再生回にも出さない
+    episodes = [x for x in items if not is_short(x["title"], x.get("duration"))]
+    if not episodes:
+        raise RuntimeError("ショート動画を除くと1本も残りませんでした")
+    if len(episodes) < len(items):
+        print(f"    ショート動画 {len(items) - len(episodes)} 本を除外")
+    items = episodes
     print(f"    {len(items)} 本")
+
+    # 再生回数が1本も取れないときは、YouTube の表記が変わったということ。
+    # 気づかずに 0 回を並べて「最多再生回」を誤って出すより、止めたほうがよい。
+    if not any(x["views"] for x in items):
+        raise RuntimeError(
+            "再生回数を1本も取れませんでした（YouTube の表記変更の可能性）")
 
     def card(it, label):
         return {
@@ -503,7 +580,7 @@ def youtube():
         }
 
     # 最多再生は再生リスト（全92本）から求める
-    popular = max(items, key=lambda x: x["views"])
+    popular = max(items, key=lambda x: x["views"] or 0)
 
     # 最新回は RSS の公開日時で決める。
     # 再生リストの並び順は公開日と一致しないことがあり（#86 が #85 より先に公開されている等）、
@@ -519,9 +596,13 @@ def youtube():
                    for e in feed.findall("a:entry", ns)]
         entries = [e for e in entries if e[1]]
         if entries:
-            newest_id = max(entries)[1]
+            # RSS にはショート動画も混ざる。新しい順に見て、
+            # 除外されずに残っている回のうち一番新しいものを採る。
             by_id = {i["id"]: i for i in items}
-            latest = by_id.get(newest_id, latest)
+            for _, vid in sorted(entries, reverse=True):
+                if vid in by_id:
+                    latest = by_id[vid]
+                    break
     except Exception as e:                                        # noqa: BLE001
         print(f"    RSS で公開日を確認できず、再生リストの先頭を最新とします（{e}）",
               file=sys.stderr)

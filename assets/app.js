@@ -136,7 +136,24 @@ function renderProfile(p) {
   $("#highlights").innerHTML = (p.highlights || [])
     .map((h) => `<li><b>${esc(h.label)}</b><span>${esc(h.detail)}</span></li>`).join("");
 
-  const tl = (rows) => rows.map((r) => `<li>
+  // 並べ替えは JSON の記述順に頼らない。
+  // 「今も続いているもの」を上に、その中では開始が新しい順。
+  // 終わったものはその下に、同じく開始が新しい順。
+  // こうしないと、過去の学位などが現職より上に来てしまう。
+  const periodKey = (p) => {
+    const [from, to] = String(p || "").split("–").map((x) => x.trim());
+    const num = (x) => {
+      const m = String(x || "").match(/(\d{4})\/(\d{1,2})/);
+      return m ? Number(m[1]) * 12 + Number(m[2]) : 0;
+    };
+    return { ongoing: !to, start: num(from) };
+  };
+  const byCurrentFirst = (rows) => [...rows].sort((a, b) => {
+    const x = periodKey(a.period), y = periodKey(b.period);
+    return (y.ongoing - x.ongoing) || (y.start - x.start);
+  });
+
+  const tl = (rows) => byCurrentFirst(rows).map((r) => `<li>
       <div class="tl-p">${esc(r.period)}</div>
       <div class="tl-o">${esc(r.org)}</div>
       <div class="tl-r">${esc(r.role)}</div></li>`).join("");
