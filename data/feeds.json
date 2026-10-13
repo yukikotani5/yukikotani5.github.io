@@ -1,11 +1,11 @@
 {
- "updatedAt": "2026-10-12T00:11:47+00:00",
+ "updatedAt": "2026-10-13T02:23:57+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
-   "title": "#93 主科の治療が気になる。どこまで関わる？ セミクローズドICUの悩み｜ICUトーク",
-   "url": "https://www.youtube.com/watch?v=Mtlf4aGdKqU",
-   "thumbnail": "https://i.ytimg.com/vi/Mtlf4aGdKqU/mqdefault.jpg",
+   "title": "#94 By Systemで書くと、病態がばらばらに見える？ ICUでのカルテ記載",
+   "url": "https://www.youtube.com/watch?v=ozyaUwhpK2Y",
+   "thumbnail": "https://i.ytimg.com/vi/ozyaUwhpK2Y/mqdefault.jpg",
    "metric": null
   },
   "popular": {
@@ -13,7 +13,7 @@
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "3,101 回再生"
+   "metric": "3,123 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "ICUでの不整脈に関するクリニカル・パール",
-   "url": "https://voicy.jp/channel/848405/8277222",
-   "date": "2026-10-09",
+   "title": "閉塞感ある組織をいかに変えられるか？",
+   "url": "https://voicy.jp/channel/848405/8284740",
+   "date": "2026-10-13",
    "metric": null,
    "thumbnail": null
   },
