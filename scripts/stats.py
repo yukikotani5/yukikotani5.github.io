@@ -6,6 +6,11 @@
   python3 scripts/stats.py            直近30日
   python3 scripts/stats.py 7          直近7日
   python3 scripts/stats.py 2026-08-24 指定日から今日まで
+  python3 scripts/stats.py 2026-09-14 2026-09-21
+                                      指定日から指定日まで（過去の週の取り直し用）
+
+  --record を付けると、表示した内容をそのまま記録ファイル
+  ~/.config/kotani-portfolio/weekly-reports.md に追記します（失敗したときはエラーを追記）。
 
 同じ長さの「直前の期間」と比べた増減も一緒に出します。
 
@@ -20,8 +25,10 @@ APIトークンはリポジトリに置きません。次のファイルから�
 環境変数 GOATCOUNTER_TOKEN が設定されていれば、そちらが優先されます。
 """
 
+import io
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
@@ -30,6 +37,10 @@ import urllib.request
 from datetime import date, timedelta
 
 CONF = os.path.expanduser("~/.config/kotani-portfolio/goatcounter.env")
+LOG = os.path.expanduser("~/.config/kotani-portfolio/weekly-reports.md")
+
+# 週1回の記録なので、前回の見出しからこれより空いていたら抜けがある。
+RECORD_GAP = 8
 
 # 数字がこれ未満のときは「傾向」として読まない。
 # 5件や10件の増減は、たまたま誰かが2回開いただけで簡単にひっくり返る。
@@ -153,14 +164,29 @@ def section(title, rows, total=None, prev=None):
         print(f"  {str(name)[:30]:30} {cnt:>5}{pct}  {bar(cnt, mx):26}{note}")
 
 
-def main():
-    site, token = load_conf()
-    arg = sys.argv[1] if len(sys.argv) > 1 else "30"
+def parse_range(args):
+    """引数から (start, end) を決める。end を省けば今日。"""
     today = date.today()
+    arg = args[0] if args else "30"
+    end = date.fromisoformat(args[1]) if len(args) > 1 else today
     if arg.count("-") == 2:
         start = date.fromisoformat(arg)
     else:
-        start = today - timedelta(days=int(arg))
+        start = end - timedelta(days=int(arg))
+    return start, end
+
+
+def last_record_date():
+    """記録ファイルの最後の見出しの日付。無ければ None。"""
+    if not os.path.exists(LOG):
+        return None
+    found = re.findall(r"^## (\d{4}-\d{2}-\d{2})", open(LOG, encoding="utf-8").read(), re.M)
+    return date.fromisoformat(max(found)) if found else None
+
+
+def main(args):
+    site, token = load_conf()
+    start, today = parse_range(args)
     span = (today - start).days or 1
     prev_end = start - timedelta(days=1)
     prev_start = prev_end - timedelta(days=span - 1)
@@ -216,5 +242,72 @@ def main():
     print("    数字は「おおよその傾向」として読んでください。")
 
 
+class Tee(io.StringIO):
+    """画面に出しつつ、同じ内容を手元にも残す。"""
+
+    def __init__(self, out):
+        super().__init__()
+        self.out = out
+
+    def write(self, s):
+        self.out.write(s)
+        return super().write(s)
+
+
+def run_and_record(args):
+    """集計して、結果を必ず記録ファイルに追記する。
+
+    2026-09-28 と 10-05 の自動実行は、数字を取ったあと記録を書く前に止まり、
+    しかも実行履歴上は「成功」になっていた。9-21 は実行自体が起動していない。
+    記録を書く役目をあとの手順に任せると、途中で止まった週は何も残らない。
+    そこで、数字を取ったその場で（失敗ならエラーを）書いてしまう。
+    """
+    start, end = parse_range(args)
+    head = f"## {end}（{start.month}/{start.day}〜{end.month}/{end.day}）"
+    stamp = date.today().isoformat()
+
+    gap_note = ""
+    last = last_record_date()
+    if last and (end - last).days > RECORD_GAP:
+        gap_note = (f"⚠ 前回の記録（{last}）から{(end - last).days}日空いています。"
+                    "あいだの週の記録が抜けています。")
+        print(gap_note)
+
+    buf = Tee(sys.stdout)
+    sys.stdout = buf
+    try:
+        main(args)
+    except SystemExit as e:
+        sys.stdout = buf.out
+        if e.code not in (None, 0):
+            body = f"集計できませんでした。エラー: {e.code}"
+            entry = f"{head.split('（')[0]}（取得失敗）\n\n{body}\n"
+            if gap_note:
+                entry += f"\n{gap_note}\n"
+            append_log(entry + "\n---\n")
+            print(f"\n（記録ファイルに取得失敗として追記しました: {LOG}）", file=sys.stderr)
+        raise
+    finally:
+        sys.stdout = buf.out
+
+    entry = f"{head} 集計値（{stamp} に自動記録）\n\n"
+    if gap_note:
+        entry += f"{gap_note}\n\n"
+    entry += "```\n" + buf.getvalue().strip("\n") + "\n```\n\n---\n"
+    append_log(entry)
+    print(f"\n（集計値を記録ファイルに追記しました: {LOG}）")
+
+
+def append_log(entry):
+    """追記のみ。上書きはしない。"""
+    os.makedirs(os.path.dirname(LOG), exist_ok=True)
+    with open(LOG, "a", encoding="utf-8") as f:
+        f.write(entry)
+
+
 if __name__ == "__main__":
-    main()
+    args = [a for a in sys.argv[1:] if a != "--record"]
+    if "--record" in sys.argv[1:]:
+        run_and_record(args)
+    else:
+        main(args)

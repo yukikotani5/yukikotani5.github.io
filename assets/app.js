@@ -122,6 +122,10 @@ const dot = (id) => `<span class="ic" data-p="${esc(id)}" aria-hidden="true"></s
 const SESSION_MATCH = /説明会/;
 // 終わった印。「受付終了」は申込締切（開催はこれから）、「開催終了」は会自体が済んだもの
 const DONE = new Set(["受付終了", "開催終了"]);
+
+/* 申込締切。開催日より前に締め切る回があるので、締切を過ぎたら自動で受付終了にする。
+   誰かが当日に手で直す運用にすると、必ず忘れて「申し込めないボタン」が残る。 */
+const pastDeadline = (n, today) => !!n.deadline && today > n.deadline;
 // 次回が未定のときの案内先。亀田ICUの公式アカウント（2026-10-10 に本人から）
 const SESSION_X = "https://x.com/kameda_icu";
 
@@ -140,13 +144,19 @@ function sessionNotice(news) {
   }
   // 時刻は任意。入っていれば「10月29日（木）20:00〜」と続ける
   const when = fmtJPDate(next.date) + (next.time ? ` ${esc(next.time)}` : "");
+  if (pastDeadline(next, today)) {
+    // 日程は先でも、申込はもう締め切っている
+    return base + `次回は<b>${when}</b>ですが、申し込みは締め切りました。`;
+  }
   if (!next.url) {
     // 日程だけ先に決まることがある。申し込み方法は後から入る
     return base + `次回は<b>${when}</b>です。申し込み方法が決まり次第、ここに出します。`;
   }
   // ボタンに日付を入れる。「何月分の申し込みか」を押す側が取り違えないように
+  const by = next.deadline ? `（申込は${fmtJPDate(next.deadline)}まで）` : "";
   return base
-    + `<a class="offer-cta" href="${esc(next.url)}" ${EXT}>${when}の回に申し込む →</a>`;
+    + `<a class="offer-cta" href="${esc(next.url)}" ${EXT}>${when}の回に申し込む →</a>`
+    + (by ? `<span class="offer-by">${by}</span>` : "");
 }
 
 const fmtJPDate = (d) => {
@@ -240,7 +250,7 @@ function renderNews(news, writings, talks, media) {
   const items = [
     ...(news?.items || []).map((n) => ({
       date: norm(n.date), type: n.type || "お知らせ", status: n.status, time: n.time,
-      title: n.title, body: n.body, url: n.url, cta: n.cta,
+      title: n.title, body: n.body, url: n.url, cta: n.cta, deadline: n.deadline,
     })),
     ...(writings?.items || []).map((w) => ({
       date: norm(w.date), type: "執筆",
@@ -276,11 +286,14 @@ function renderNews(news, writings, talks, media) {
 
   el.innerHTML = list.map((n) => {
     const soon = n.date >= today;
-    const closed = DONE.has(n.status);
+    const closed = DONE.has(n.status) || pastDeadline(n, today);
     // これからの予定でも受付が終わっていれば、参加を促す見た目にはしない
     const open = soon && !closed;
     // 終わっているときは、その理由（受付終了／開催終了）をそのまま出す
-    const label = closed ? n.status : soon ? "開催予定" : n.type;
+    // status が書かれていなければ日付から決める。
+    // 開催日前なら「受付終了」（申込だけ締切）、過ぎていれば「開催終了」。
+    const label = closed ? (n.status || (soon ? "受付終了" : "開催終了"))
+                : soon ? "開催予定" : n.type;
     const title = n.url
       ? `<a href="${esc(n.url)}" ${EXT}>${esc(n.title)}</a>`
       : esc(n.title);
