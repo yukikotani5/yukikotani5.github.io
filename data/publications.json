@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-10-14T12:59:23+00:00",
+ "updatedAt": "2026-10-14T23:39:00+00:00",
  "stats": {
   "total": 96,
   "articles": 76,
   "firstAuthor": 23,
-  "citations": 1518,
+  "citations": 1520,
   "since": 2016
  },
  "latest": {
@@ -130,8 +130,8 @@
   "t:etomidateasaninductionagentforendotrachealintubationincriticallyillpatientsametaanalysisof": 62,
   "10.1186/s13054-024-04831-4": 56,
   "t:ketamineversusetomidateasaninductionagentfortrachealintubationincriticallyilladultsabayesi": 56,
-  "10.1186/s40560-025-00776-0": 41,
-  "t:thejapaneseclinicalpracticeguidelinesformanagementofsepsisandsepticshock2024": 41,
+  "10.1186/s40560-025-00776-0": 42,
+  "t:thejapaneseclinicalpracticeguidelinesformanagementofsepsisandsepticshock2024": 42,
   "10.1186/s13054-024-05123-7": 37,
   "t:thereninangiotensinaldosteronesysteminsepsisanditsclinicalmodulationwithexogenousangiotens": 37,
   "10.1186/s13054-023-04755-5": 32,
@@ -140,8 +140,8 @@
   "t:aminoacidinfusionforperioperativefunctionalrenalprotectionametaanalysis": 32,
   "10.1093/ckj/sfae409": 22,
   "t:intravenousaminoacidforkidneyprotectioncurrentunderstandingandfutureperspectives": 22,
-  "10.1186/s13054-024-05212-7": 21,
-  "t:nonadrenergicvasopressorsforvasodilatoryshockorperioperativevasoplegiaametaanalysisofrando": 21,
+  "10.1186/s13054-024-05212-7": 22,
+  "t:nonadrenergicvasopressorsforvasodilatoryshockorperioperativevasoplegiaametaanalysisofrando": 22,
   "10.1093/burnst/tkae081": 16,
   "t:haemodynamicmanagementofsepticshock": 16,
   "10.1186/s13054-025-05467-8": 15,
