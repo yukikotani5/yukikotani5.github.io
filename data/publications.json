@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-10-13T02:23:57+00:00",
+ "updatedAt": "2026-10-14T00:07:03+00:00",
  "stats": {
   "total": 96,
   "articles": 76,
   "firstAuthor": 23,
-  "citations": 1515,
+  "citations": 1518,
   "since": 2016
  },
  "latest": {
@@ -31,7 +31,7 @@
    "journal": "N Engl J Med",
    "year": 2024,
    "date": "2024-06-12",
-   "citations": 188,
+   "citations": 189,
    "doi": "10.1056/nejmoa2403769",
    "url": "https://doi.org/10.1056/nejmoa2403769",
    "position": "middle",
@@ -118,8 +118,8 @@
   }
  ],
  "citationsCache": {
-  "10.1056/nejmoa2403769": 188,
-  "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 188,
+  "10.1056/nejmoa2403769": 189,
+  "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 189,
   "10.1186/s13054-023-04322-y": 169,
   "t:anupdatednorepinephrineequivalentscoreinintensivecareasamarkerofshockseverity": 169,
   "10.1001/jama.2023.10598": 114,
@@ -156,10 +156,10 @@
   "t:methylenebluereducesmortalityincriticallyillandperioperativepatientsametaanalysisofrandomi": 33,
   "10.1186/s13613-021-00969-4": 24,
   "t:theimpactofrelativehypotensiononacutekidneyinjuryprogressionaftercardiacsurgeryamulticente": 24,
+  "10.1053/j.jvca.2023.02.045": 24,
+  "t:delnidocardioplegiainadultcardiacsurgerymetaanalysisofrandomizedclinicaltrials": 24,
   "10.1053/j.jvca.2023.05.013": 24,
   "t:norepinephrinedoseshouldbereportedasbaseequivalenceinclinicalresearchmanuscripts": 24,
-  "10.1053/j.jvca.2023.02.045": 23,
-  "t:delnidocardioplegiainadultcardiacsurgerymetaanalysisofrandomizedclinicaltrials": 23,
   "10.1002/14651858.cd013494.pub2": 22,
   "t:highversuslowbloodpressuretargetsforcardiacsurgerywhileoncardiopulmonarybypass": 22,
   "10.1186/s13613-024-01304-3": 21,
@@ -192,6 +192,8 @@
   "t:amultinationalrandomizedtrialofmegadoseesomeprazoleasantiinflammatoryagentinsepsis": 7,
   "10.1213/ane.0000000000007779": 7,
   "t:thereninangiotensinaldosteronesystemincardiacsurgeryandangiotensiniitherapyforvasoplegia": 7,
+  "10.1186/s13054-025-05335-5": 5,
+  "t:standardizingpersistentandchroniccriticalillnessimpactofdefinitionsvariabilityonprevalence": 5,
   "10.1177/2048872616652261": 23,
   "t:validationofthediagnosticutilityofddimermeasurementinpatientswithacuteaorticsyndrome": 23,
   "10.1136/bcr-2016-216440": 14,
@@ -208,8 +210,6 @@
   "t:developmentofamachinelearningbasedmodelforpredictingtheincidenceofperipheralintravenouscat": 6,
   "10.1093/cid/ciaf260": 5,
   "t:contaminationofbloodculturesdrawnfromarterialcathetersversusvenipunctureorvenouscathetersi": 5,
-  "10.1186/s13054-025-05335-5": 4,
-  "t:standardizingpersistentandchroniccriticalillnessimpactofdefinitionsvariabilityonprevalence": 4,
   "10.1155/emmi/4457109": 3,
   "t:impactofnoradrenalineadministrationdosageontheoccurrenceofperipheralintravenouscatheterrel": 3,
   "10.1136/bcr-2017-220392": 6,
