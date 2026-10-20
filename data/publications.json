@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-10-20T00:05:25+00:00",
+ "updatedAt": "2026-10-20T23:36:23+00:00",
  "stats": {
   "total": 96,
   "articles": 76,
   "firstAuthor": 23,
-  "citations": 1534,
+  "citations": 1535,
   "since": 2016
  },
  "latest": {
@@ -202,8 +202,8 @@
   "t:modificationofsequentialorganfailureassessmentscoreusingacutekidneyinjuryclassification": 12,
   "10.1136/bcr-2016-218388": 11,
   "t:hypotensioninducedbytheconcomitantuseofacalciumchannelblockerandclarithromycin": 11,
-  "10.1053/j.jvca.2024.07.001": 8,
-  "t:theeffectsofcorticosteroidsonsurvivalinpediatricandnonelderlyadultpatientsundergoingcardia": 8,
+  "10.1053/j.jvca.2024.07.001": 9,
+  "t:theeffectsofcorticosteroidsonsurvivalinpediatricandnonelderlyadultpatientsundergoingcardia": 9,
   "10.1016/j.cct.2023.107319": 6,
   "t:highdoseesomeprazoleasanantiinflammatoryagentinsepsisprotocolforarandomizedcontrolledtrial": 6,
   "10.2478/jccm-2024-0028": 6,
