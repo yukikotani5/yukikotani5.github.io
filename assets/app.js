@@ -249,19 +249,19 @@ function renderNews(news, writings, talks, media) {
 
   const items = [
     ...(news?.items || []).map((n) => ({
-      date: norm(n.date), type: n.type || "お知らせ", status: n.status, time: n.time,
+      date: norm(n.date), raw: n.date, type: n.type || "お知らせ", status: n.status, time: n.time,
       title: n.title, body: n.body, url: n.url, cta: n.cta, deadline: n.deadline,
     })),
     ...(writings?.items || []).map((w) => ({
-      date: norm(w.date), type: "執筆",
+      date: norm(w.date), raw: w.date, type: "執筆",
       title: w.title, body: `${w.journal}${w.citation ? " " + w.citation : ""}`, url: w.url,
     })),
     ...(talks?.items || []).map((t) => ({
-      date: norm(t.date), type: "登壇",
+      date: norm(t.date), raw: t.date, type: "登壇",
       title: t.title, body: t.venue, url: t.url,
     })),
     ...(media?.items || []).map((m) => ({
-      date: norm(m.date), type: m.type || "取材",
+      date: norm(m.date), raw: m.date, type: m.type || "取材",
       title: m.title, body: m.outlet, url: m.url,
     })),
   ].filter((x) => x.title && x.date);
@@ -301,7 +301,9 @@ function renderNews(news, writings, talks, media) {
       ? `<a class="news-cta" href="${esc(n.url)}" ${EXT}>${esc(n.cta || "詳しく見る")}</a>`
       : "";
     return `<li class="news-item${open ? " is-open" : ""}${closed ? " is-closed" : ""}">
-      <span class="news-date">${esc(String(n.date).slice(0, 10).replace(/-/g, "."))}${
+      <!-- 並べ替えには補った日付を使うが、表示は元の書き方のまま。
+           「2026-10」を「2026.10.01」と出すと、決まっていない日を断定することになる -->
+      <span class="news-date">${esc(String(n.raw || n.date).slice(0, 10).replace(/-/g, "."))}${
         n.time ? `<span class="news-time">${esc(n.time)}</span>` : ""}</span>
       <span class="news-type">${esc(label)}</span>
       <span class="news-body">

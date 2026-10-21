@@ -23,6 +23,22 @@ except Exception as e: print(e); sys.exit(1)
   }
 done
 
+# JS・CSS を変えたら、index.html の ?v= を打ち直す。
+# これが固定のままだと、ブラウザが古いファイルを使い続ける
+# （実際 2026-08-24 から版数が止まったまま、app.js だけ8回変わっていた）。
+if ! git diff --quiet -- assets/ || ! git diff --cached --quiet -- assets/; then
+  python3 - <<'STAMP'
+import datetime, re
+p = "index.html"
+s = open(p, encoding="utf-8").read()
+v = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+s2, n = re.subn(r"\?v=\d+", "?v=" + v, s)
+if n:
+    open(p, "w", encoding="utf-8").write(s2)
+    print(f"  資産の版数を {v} に更新しました（{n}箇所）")
+STAMP
+fi
+
 # profile.json を直したとき、構造化データが古いまま残らないようにする
 # （検索エンジンに渡す内容とページの表示がズレると逆効果になるため）
 python3 scripts/build_jsonld.py || {
