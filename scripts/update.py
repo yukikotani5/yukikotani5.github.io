@@ -934,6 +934,19 @@ def main():
         old.update(feeds)
         write("feeds.json", old)
 
+    def page_numbers():
+        """和文原稿のページ番号を CiNii から埋める。
+
+        雑誌が出た直後はページ番号が分からないので、巻号だけで登録しておき、
+        CiNii に収載された時点でここが自動で補う。
+        題名・誌名・巻・号がすべて一致したものだけを採用する（同姓同名は無関係）。
+        """
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import fill_pages
+        print("  和文のページ番号 …")
+        fill_pages.main()
+
+    attempt("page numbers", page_numbers)
     attempt("media images", resolve_media_images)
     attempt("sitemap", build_sitemap)
 
