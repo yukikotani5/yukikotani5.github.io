@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-10-21T23:53:17+00:00",
+ "updatedAt": "2026-10-22T23:52:30+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#92 やりたいこと、後回しにしていませんか？中堅医師のキャリアと責任【映像アップデート版】",
    "url": "https://www.youtube.com/watch?v=reiXTN1XVHc",
    "thumbnail": "https://i.ytimg.com/vi/reiXTN1XVHc/mqdefault.jpg",
-   "metric": "42 回再生"
+   "metric": "79 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "3,268 回再生"
+   "metric": "3,277 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "キャリアの目標を持った方がいいのか？",
-   "url": "https://voicy.jp/channel/848405/8320784",
-   "date": "2026-10-20",
+   "title": "ICUでの鎮静のクリニカルパール",
+   "url": "https://voicy.jp/channel/848405/8329792",
+   "date": "2026-10-23",
    "metric": null,
    "thumbnail": null
   },
