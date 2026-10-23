@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-10-22T23:52:30+00:00",
+ "updatedAt": "2026-10-23T23:44:34+00:00",
  "stats": {
   "total": 96,
   "articles": 76,
   "firstAuthor": 23,
-  "citations": 1539,
+  "citations": 1542,
   "since": 2016
  },
  "latest": {
@@ -31,7 +31,7 @@
    "journal": "N Engl J Med",
    "year": 2024,
    "date": "2024-06-12",
-   "citations": 189,
+   "citations": 190,
    "doi": "10.1056/nejmoa2403769",
    "url": "https://doi.org/10.1056/nejmoa2403769",
    "position": "middle",
@@ -118,8 +118,8 @@
   }
  ],
  "citationsCache": {
-  "10.1056/nejmoa2403769": 189,
-  "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 189,
+  "10.1056/nejmoa2403769": 190,
+  "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 190,
   "10.1186/s13054-023-04322-y": 171,
   "t:anupdatednorepinephrineequivalentscoreinintensivecareasamarkerofshockseverity": 171,
   "10.1001/jama.2023.10598": 114,
@@ -138,8 +138,8 @@
   "t:positivesinglecenterrandomizedtrialsandsubsequentmulticenterrandomizedtrialsincriticallyil": 32,
   "10.1053/j.jvca.2024.08.033": 32,
   "t:aminoacidinfusionforperioperativefunctionalrenalprotectionametaanalysis": 32,
-  "10.1186/s13054-024-05212-7": 23,
-  "t:nonadrenergicvasopressorsforvasodilatoryshockorperioperativevasoplegiaametaanalysisofrando": 23,
+  "10.1186/s13054-024-05212-7": 24,
+  "t:nonadrenergicvasopressorsforvasodilatoryshockorperioperativevasoplegiaametaanalysisofrando": 24,
   "10.1093/ckj/sfae409": 22,
   "t:intravenousaminoacidforkidneyprotectioncurrentunderstandingandfutureperspectives": 22,
   "10.1093/burnst/tkae081": 16,
@@ -182,10 +182,10 @@
   "t:haptoglobinadministrationforintravascularhemolysisasystematicreview": 12,
   "10.23736/s0031-0808.23.04986-8": 10,
   "t:beyondthesurvivingsepsiscampaignguidelinesasystematicreviewofinterventionsaffectingmortali": 10,
+  "10.1053/j.jvca.2024.04.010": 10,
+  "t:bloodpressuremanagementforhypotensivepatientsinintensivecareandperioperativecardiovascular": 10,
   "10.1053/j.jvca.2024.12.022": 10,
   "t:theefficacyandsafetyofangiotensiniifortreatmentofvasoplegiaincriticallyillpatientsasystema": 10,
-  "10.1053/j.jvca.2024.04.010": 9,
-  "t:bloodpressuremanagementforhypotensivepatientsinintensivecareandperioperativecardiovascular": 9,
   "10.1097/shk.0000000000002463": 9,
   "t:mechanicalleftventricularunloadingincardiogenicshocktreatedwithvenoarterialextracorporealm": 9,
   "10.1097/ccm.0000000000006720": 7,
