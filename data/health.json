@@ -1,39 +1,38 @@
 {
- "updatedAt": "2026-10-23T23:44:34+00:00",
+ "updatedAt": "2026-10-24T22:52:10+00:00",
  "sources": {
   "publications": {
-   "lastOk": "2026-10-23T23:44:34+00:00",
+   "lastOk": "2026-10-24T22:52:10+00:00",
    "failStreak": 0,
    "lastErrorAt": "2026-09-26T23:21:42+00:00"
   },
   "youtube": {
-   "lastOk": "2026-10-23T23:44:34+00:00",
+   "lastOk": "2026-10-24T22:52:10+00:00",
    "failStreak": 0
   },
   "note": {
-   "lastOk": "2026-10-23T23:44:34+00:00",
+   "lastOk": "2026-10-24T22:52:10+00:00",
    "failStreak": 0
   },
   "voicy": {
-   "lastOk": "2026-10-22T23:52:30+00:00",
-   "failStreak": 1,
-   "lastError": "vmedia-player-api.voicy.jp から取得できませんでした（5回試行）: HTTP Error 504: Gateway Timeout",
+   "lastOk": "2026-10-24T22:52:10+00:00",
+   "failStreak": 0,
    "lastErrorAt": "2026-10-23T23:44:34+00:00"
   },
   "media images": {
-   "lastOk": "2026-10-23T23:44:34+00:00",
+   "lastOk": "2026-10-24T22:52:10+00:00",
    "failStreak": 0
   },
   "sitemap": {
-   "lastOk": "2026-10-23T23:44:34+00:00",
+   "lastOk": "2026-10-24T22:52:10+00:00",
    "failStreak": 0
   },
   "openalex": {
-   "lastOk": "2026-10-23T23:44:34+00:00",
+   "lastOk": "2026-10-24T22:52:10+00:00",
    "failStreak": 0
   },
   "page numbers": {
-   "lastOk": "2026-10-23T23:44:34+00:00",
+   "lastOk": "2026-10-24T22:52:10+00:00",
    "failStreak": 0
   }
  }
