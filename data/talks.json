@@ -14,12 +14,15 @@
  "items": [
   {
    "date": "2026-12-03",
+   "time": "18:00〜",
    "venue": "IIZUKA Cross Talk（飯塚病院）",
    "title": "重症患者の気管挿管",
    "kind": "セミナー",
    "role": "外部講師",
-   "note": "オンライン開催。飯塚病院の救急科・集中治療科の先生方との対話形式",
-   "url": "https://qqka-senmoni.com/14573"
+   "note": "オンライン開催・参加無料。初期研修医と医学生が対象です。飯塚病院の救急科・集中治療科の先生方と話します",
+   "url": "https://qqka-senmoni.com/14573",
+   "cta": "参加を申し込む",
+   "ctaUrl": "https://aih-net.zoom.us/meeting/register/xYDVc5M1QveNfvyKeCYY-w"
   },
   {
    "date": "2026-07-11",

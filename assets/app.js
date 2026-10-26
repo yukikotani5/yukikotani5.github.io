@@ -259,6 +259,9 @@ function renderNews(news, writings, talks, media) {
     ...(talks?.items || []).map((t) => ({
       date: norm(t.date), raw: t.date, type: "登壇",
       title: t.title, body: t.venue, url: t.url,
+      // これからの講演は「告知」として申し込みボタンまで出せるようにする。
+      // 申込先が案内ページと別のことがあるので ctaUrl で上書きできる。
+      time: t.time, cta: t.cta, ctaUrl: t.ctaUrl,
     })),
     ...(media?.items || []).map((m) => ({
       date: norm(m.date), raw: m.date, type: m.type || "取材",
@@ -297,8 +300,10 @@ function renderNews(news, writings, talks, media) {
     const title = n.url
       ? `<a href="${esc(n.url)}" ${EXT}>${esc(n.title)}</a>`
       : esc(n.title);
-    const cta = (n.url && open)
-      ? `<a class="news-cta" href="${esc(n.url)}" ${EXT}>${esc(n.cta || "詳しく見る")}</a>`
+    // 申込先が案内ページと違うときは ctaUrl を優先する
+    const ctaHref = n.ctaUrl || n.url;
+    const cta = (ctaHref && open)
+      ? `<a class="news-cta" href="${esc(ctaHref)}" ${EXT}>${esc(n.cta || "詳しく見る")}</a>`
       : "";
     return `<li class="news-item${open ? " is-open" : ""}${closed ? " is-closed" : ""}">
       <!-- 並べ替えには補った日付を使うが、表示は元の書き方のまま。
