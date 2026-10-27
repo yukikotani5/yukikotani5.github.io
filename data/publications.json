@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-10-26T08:07:50+00:00",
+ "updatedAt": "2026-10-27T00:13:17+00:00",
  "stats": {
   "total": 96,
   "articles": 76,
   "firstAuthor": 23,
-  "citations": 1546,
+  "citations": 1547,
   "since": 2016
  },
  "latest": {
@@ -148,7 +148,7 @@
   "t:haemodynamicmanagementofsepticshock": 16,
   "10.1097/ccm.0000000000007124": 15,
   "t:clinicalcriteriaforthedefinitionofrefractorysepticshockajointdelphiconsensusfromthesociety": 15,
-  "10.1007/s00134-026-08344-2": 10,
+  "10.1007/s00134-026-08344-2": 11,
   "10.1186/s40560-020-00518-4": 46,
   "t:occurrenceandincidencerateofperipheralintravascularcatheterrelatedphlebitisandcomplication": 46,
   "10.1186/s13613-022-01009-5": 35,
