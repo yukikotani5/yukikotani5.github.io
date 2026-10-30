@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-10-29T00:35:02+00:00",
+ "updatedAt": "2026-10-30T00:34:43+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
-   "title": "#95 心停止後の酸素管理、どう考える？ LOGICAL試験を読む【論文紹介】",
-   "url": "https://www.youtube.com/watch?v=a8VBYfF5vl0",
-   "thumbnail": "https://i.ytimg.com/vi/a8VBYfF5vl0/mqdefault.jpg",
-   "metric": "147 回再生"
+   "title": "#92 やりたいこと、後回しにしていませんか？中堅医師のキャリアと責任【映像アップデート版】",
+   "url": "https://www.youtube.com/watch?v=reiXTN1XVHc",
+   "thumbnail": "https://i.ytimg.com/vi/reiXTN1XVHc/mqdefault.jpg",
+   "metric": "167 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "3,368 回再生"
+   "metric": "3,380 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "『熱狂しない経営』、すごく良かった！",
-   "url": "https://voicy.jp/channel/848405/8350280",
-   "date": "2026-10-27",
+   "title": "救急医学会振り返り",
+   "url": "https://voicy.jp/channel/848405/8357553",
+   "date": "2026-10-30",
    "metric": null,
    "thumbnail": null
   },
