@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-11-02T00:12:41+00:00",
+ "updatedAt": "2026-11-03T02:45:05+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#95 心停止後の酸素管理、どう考える？ LOGICAL試験を読む【論文紹介】",
    "url": "https://www.youtube.com/watch?v=a8VBYfF5vl0",
    "thumbnail": "https://i.ytimg.com/vi/a8VBYfF5vl0/mqdefault.jpg",
-   "metric": "224 回再生"
+   "metric": "253 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#47 ICUでの心臓血管外科術後管理",
    "url": "https://www.youtube.com/watch?v=poxn31ixoFE",
    "thumbnail": "https://i.ytimg.com/vi/poxn31ixoFE/mqdefault.jpg",
-   "metric": "3,446 回再生"
+   "metric": "3,478 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "救急医学会振り返り",
-   "url": "https://voicy.jp/channel/848405/8357553",
-   "date": "2026-10-30",
+   "title": "救急医学会での出会い・再会",
+   "url": "https://voicy.jp/channel/848405/8384283",
+   "date": "2026-11-03",
    "metric": null,
    "thumbnail": null
   },
