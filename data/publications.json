@@ -1,10 +1,10 @@
 {
- "updatedAt": "2026-11-05T01:16:37+00:00",
+ "updatedAt": "2026-11-06T01:20:38+00:00",
  "stats": {
   "total": 96,
   "articles": 76,
   "firstAuthor": 23,
-  "citations": 1613,
+  "citations": 1614,
   "since": 2016
  },
  "latest": {
@@ -31,7 +31,7 @@
    "journal": "N Engl J Med",
    "year": 2024,
    "date": "2024-06-12",
-   "citations": 195,
+   "citations": 196,
    "doi": "10.1056/nejmoa2403769",
    "url": "https://doi.org/10.1056/nejmoa2403769",
    "position": "middle",
@@ -118,8 +118,8 @@
   }
  ],
  "citationsCache": {
-  "10.1056/nejmoa2403769": 195,
-  "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 195,
+  "10.1056/nejmoa2403769": 196,
+  "t:arandomizedtrialofintravenousaminoacidsforkidneyprotection": 196,
   "10.1186/s13054-023-04322-y": 176,
   "t:anupdatednorepinephrineequivalentscoreinintensivecareasamarkerofshockseverity": 176,
   "10.1001/jama.2023.10598": 115,
