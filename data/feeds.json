@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-11-16T00:43:29+00:00",
+ "updatedAt": "2026-11-17T03:22:35+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#97 主科と集中治療科 ICUでの役割分担をどう考える？【お便り回答】",
    "url": "https://www.youtube.com/watch?v=VsUVHTSRmSY",
    "thumbnail": "https://i.ytimg.com/vi/VsUVHTSRmSY/mqdefault.jpg",
-   "metric": "229 回再生"
+   "metric": "240 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#82 重症急性膵炎の集中治療―待つしかない、でも何もしないわけじゃない",
    "url": "https://www.youtube.com/watch?v=ZxQ0NHE2zxs",
    "thumbnail": "https://i.ytimg.com/vi/ZxQ0NHE2zxs/mqdefault.jpg",
-   "metric": "1,349 回再生"
+   "metric": "1,358 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "ICUでの右心不全管理のクリニカルパール",
-   "url": "https://voicy.jp/channel/848405/8422143",
-   "date": "2026-11-13",
+   "title": "大好きなポッドキャスト番組に送ったトークテーマが採用された話",
+   "url": "https://voicy.jp/channel/848405/8473309",
+   "date": "2026-11-17",
    "metric": null,
    "thumbnail": null
   },
