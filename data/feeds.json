@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-11-19T02:13:51+00:00",
+ "updatedAt": "2026-11-20T01:59:48+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#98 まれな緊急事態にどう備える？ 個人とチームの準備【お便り回答】",
    "url": "https://www.youtube.com/watch?v=GSEUE6dh7vU",
    "thumbnail": "https://i.ytimg.com/vi/GSEUE6dh7vU/mqdefault.jpg",
-   "metric": "139 回再生"
+   "metric": "155 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
-   "title": "#82 重症急性膵炎の集中治療―待つしかない、でも何もしないわけじゃない",
-   "url": "https://www.youtube.com/watch?v=ZxQ0NHE2zxs",
-   "thumbnail": "https://i.ytimg.com/vi/ZxQ0NHE2zxs/mqdefault.jpg",
-   "metric": "1,393 回再生"
+   "title": "#89 その「なんか変」を言葉にする｜ICUのクリニカルパール【お便り回答】",
+   "url": "https://www.youtube.com/watch?v=799Rv7vw-_E",
+   "thumbnail": "https://i.ytimg.com/vi/799Rv7vw-_E/mqdefault.jpg",
+   "metric": "1,182 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "大好きなポッドキャスト番組に送ったトークテーマが採用された話",
-   "url": "https://voicy.jp/channel/848405/8473309",
-   "date": "2026-11-17",
+   "title": "昇圧剤、2剤目はいつ足せばよいのか？",
+   "url": "https://voicy.jp/channel/848405/8493871",
+   "date": "2026-11-20",
    "metric": null,
    "thumbnail": null
   },
