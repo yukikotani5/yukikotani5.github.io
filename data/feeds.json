@@ -1,19 +1,19 @@
 {
- "updatedAt": "2026-11-25T03:55:48+00:00",
+ "updatedAt": "2026-11-26T03:21:02+00:00",
  "youtube": {
   "latest": {
    "label": "最新回",
    "title": "#99 ICUで薬剤師に期待する役割 どんな場面で力を発揮できる？【お便り回答】",
    "url": "https://www.youtube.com/watch?v=V0y5rmJwvts",
    "thumbnail": "https://i.ytimg.com/vi/V0y5rmJwvts/mqdefault.jpg",
-   "metric": "123 回再生"
+   "metric": "171 回再生"
   },
   "popular": {
    "label": "よく聴かれている回",
    "title": "#93 主科の治療が気になる。どこまで関わる？ セミクローズドICUの悩み｜ICUトーク",
    "url": "https://www.youtube.com/watch?v=Mtlf4aGdKqU",
    "thumbnail": "https://i.ytimg.com/vi/Mtlf4aGdKqU/mqdefault.jpg",
-   "metric": "624 回再生"
+   "metric": "628 回再生"
   }
  },
  "note": {
@@ -37,9 +37,9 @@
  "voicy": {
   "latest": {
    "label": "最新話",
-   "title": "ままならないキャリアとどう付き合うか？",
-   "url": "https://voicy.jp/channel/848405/8523300",
-   "date": "2026-11-23",
+   "title": "ICUで診断がつかないときに気をつけていること",
+   "url": "https://voicy.jp/channel/848405/8523372",
+   "date": "2026-11-26",
    "metric": null,
    "thumbnail": null
   },
